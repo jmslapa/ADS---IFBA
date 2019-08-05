@@ -5,8 +5,10 @@
 #define POSICAO_INVALIDA 5
 #define SEM_ESPACO_DE_MEMORIA 6
 #define TAMANHO_INVALIDO 7
+#define VALOR_INVALIDO 8
 
 int criarEstruturaAuxiliar(int tamanho, int posicao);
 int inserirNumeroEmEstrutura(int valor, int posicao);
 int listaEstruturaAuxiliar(int posicao);
-void dobrar(int *x);
+void atribuiNULL();
+int ehPosicaoValida(int posicao);

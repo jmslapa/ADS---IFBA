@@ -5,13 +5,18 @@
 
 #include "EstruturaVetores.h"
 
-int vetorPrincipal[TAM];
+typedef struct{
+    int tamanho;
+    int ocupado;
+    int *elemento;
+}lista;
 
-void dobrar(int *x){
-    
-    *x = *x * 2;
-    
-    
+int *vetorPrincipal[10];
+
+
+void atribuiNULL(){
+    for(int i=0; i<TAM; i++)
+        vetorPrincipal[i] = NULL;
 }
 
 
@@ -33,37 +38,33 @@ int criarEstruturaAuxiliar(int tamanho, int posicao){
 
 }
 
-/*
-Rertono (int)
-    1 - inserido com sucesso
-    2 - não tem espaço
-    3 - Não tem estrutura auxiliar
-
-CONSTANTES
-*/ 
 int inserirNumeroEmEstrutura(int valor, int posicao){
 
     int retorno = 0;
-    int existeEstruturaAuxiliar = 0;
-    int temEspaco = 0;
-    int posicao_invalida = 0;
-    
-    if (posicao_invalida)
-        retorno = POSICAO_INVALIDA;
-    else{
-        // testar se existe a estrutura auxiliar
-        if (existeEstruturaAuxiliar){
-          if (temEspaco){
-              //insere 
-              retorno = SUCESSO;  
-          }else{
-              retorno = SEM_ESPACO;
-          }
-        }else{
-          retorno = SEM_ESTRUTURA_AUXILIAR;
-        }
-    }  
-  
+
+        //testar se a posicao eh valida
+        if (ehPosicaoValida(posicao)==POSICAO_INVALIDA)
+            retorno = POSICAO_INVALIDA;
+        else{
+            // testar se existe a estrutura auxiliar
+            if (vetorPrincipal[posicao-1]!=NULL){
+                //testar se tem espaço
+                if (vetorPrincipal[posicao-1].ocupado < vetorPrincipal[posicao-1].tamanho){
+                  //insere
+                  vetorPrincipal[posicao-1].elemento[vetorPrincipal[posicao-1].ocupado] = valor;
+                  retorno = SUCESSO;  
+                }else{
+                  retorno = SEM_ESPACO;
+                }
+            }else{
+                retorno = SEM_ESTRUTURA_AUXILIAR;
+            }
+        }  
+
+    else
+        retorno = VALOR_INVALIDO;
+
+
     return retorno;
 
 }
@@ -92,5 +93,9 @@ int listaEstruturaAuxiliar(int posicao){
 
     return retorno;
 
+}
+
+int temEspaco(posicao){
+    
 }
 
