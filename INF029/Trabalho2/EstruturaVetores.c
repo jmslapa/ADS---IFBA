@@ -58,6 +58,54 @@ int criarEstruturaAuxiliar(int tamanho, int posicao){
 
 }
 
+int excluirNumeroEmEstrutura(int valor, int posicao){
+
+    int indiceEstruturaAuxiliar;
+    //testar se existe estrutura auxiliar
+    if(ehPosicaoValida(posicao) != SUCESSO)
+        return POSICAO_INVALIDA;
+    
+    else{
+
+        //ordena o vetor auxiliar
+        ordenaVetor(posicao);
+
+        //testa se o valor informado existe na estrutura auxiliar
+        indiceEstruturaAuxiliar = buscaElemento(valor, posicao);
+
+        if(indiceEstruturaAuxiliar == VALOR_INVALIDO)
+            return VALOR_INVALIDO;
+        else{
+
+            if(indiceEstruturaAuxiliar == (vetorPrincipal[posicao-1].tamanho) - 1){
+                
+                vetorPrincipal[posicao-1].tamanho--;
+                vetorPrincipal[posicao-1].preenchido--;
+
+                return SUCESSO;
+
+            }else if(indiceEstruturaAuxiliar == (vetorPrincipal[posicao-1].preenchido) - 1){
+
+                vetorPrincipal[posicao-1].tamanho--;
+                vetorPrincipal[posicao-1].preenchido--;
+
+                return SUCESSO;
+
+            }else{
+
+                shiftEsquerda(posicao, indiceEstruturaAuxiliar);
+                vetorPrincipal[posicao-1].tamanho--;
+                vetorPrincipal[posicao-1].preenchido--;
+
+                return SUCESSO;                
+            }
+
+        }
+
+    }
+}
+
+
 int inserirNumeroEmEstrutura(int valor, int posicao){
 
     int retorno = 0;
@@ -170,6 +218,34 @@ int ordenaVetor(int posicao){
     }
 }
 
+int buscaElemento(int elemento, int posicao){
+
+    int inicio, meio, fim;
+
+    inicio = 0;
+    fim = (vetorPrincipal[posicao-1].tamanho) - 1;
+
+    while(inicio <= fim){
+
+        meio = (inicio + fim)/2;
+
+        if(vetorPrincipal[posicao-1].vetorAuxiliar[meio] == elemento)
+            return meio;
+
+        else if(vetorPrincipal[posicao-1].vetorAuxiliar[meio] < meio)
+            fim=meio-1;
+        
+        else
+            inicio=meio+1;
+    }
+
+    return VALOR_INVALIDO;
+
+}
+
+
+
+
 
 void capturaValor(int *valor){
 
@@ -200,4 +276,13 @@ void capturaTamanho(int *tamanho){
     scanf("%d", &n);
 
     *tamanho=n;
+}
+
+void shiftEsquerda(int posicao, int posicaoElemento){
+
+    int i;
+
+    for(i = posicaoElemento; i < (vetorPrincipal[posicao-1].tamanho)-1; i++ )
+        vetorPrincipal[posicao-1].vetorAuxiliar[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i+1];
+
 }

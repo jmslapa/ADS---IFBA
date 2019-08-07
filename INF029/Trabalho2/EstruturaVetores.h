@@ -22,3 +22,6 @@ int ordenaVetor(int posicao);
 void capturaPosicao(int *posicao);
 void capturaValor(int *valor);
 void capturaTamanho(int *tamanho);
+int excluirNumeroEmEstrutura(int valor, int posicao);
+int buscaElemento(int elemento, int posicao);
+void shiftEsquerda(int posicao, int posicaoElemento);

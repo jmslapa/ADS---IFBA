@@ -15,8 +15,8 @@ int menu(){
     printf("3 - Listar Tudo\n");
     printf("4 - Ordenar e listar\n");
     printf("5 - Ordenar e listar tudo\n");
-    printf("6 - Aumentar tamanho da lista\n");
-    printf("7 - Criar estrutura Auxiliar\n");
+    printf("6 - Aumentar tamanho da Estrutura Auxiliar\n");
+    printf("7 - Criar Estrutura Auxiliar\n");
     scanf("%d", &op);
     return op;
 }
@@ -54,7 +54,7 @@ int main(){
                 }else if (ret == SEM_ESTRUTURA_AUXILIAR){
                 	limpaTela();
                     puts("Sem estrutura Auxiliar");
-                }else if(ret == POSICAO_INVALIDA){
+                }else{
                 	limpaTela();
                     puts("Posicao invalida");
                 }
@@ -62,7 +62,25 @@ int main(){
             }
 
             case 2:{ //excluir
-                //TODO
+            	//recebe valor e posicao
+            	capturaValor(&valor);
+            	capturaPosicao(&posicao);
+
+            	//define retorno
+            	ret = excluirNumeroEmEstrutura(valor, posicao);
+
+            	//chama função de excluir
+            	if(ret == SUCESSO){
+            		limpaTela();
+            		puts("Excluido com sucesso");
+                }else if(ret == VALOR_INVALIDO){
+                	limpaTela();
+            		puts("Valor Invalido");
+                }else{
+                	limpaTela();
+                    puts("Posicao invalida");
+                }
+
                 break;
             }
             
