@@ -1,3 +1,6 @@
+#define TAM 10
+#define TAM_MAX_ESTRUTURA_AUXILIAR 100
+
 #define SUCESSO 1
 #define SEM_ESPACO 2
 #define SEM_ESTRUTURA_AUXILIAR 3
@@ -12,3 +15,6 @@ int inserirNumeroEmEstrutura(int valor, int posicao);
 int listaEstruturaAuxiliar(int posicao);
 void atribuiNULL();
 int ehPosicaoValida(int posicao);
+void limpaTela();
+void quebraPagina();
+void liberaMemoria();
