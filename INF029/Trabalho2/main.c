@@ -5,7 +5,6 @@
 
 int menu();
 
-void dobrar(int *x);
 
 int menu(){
     int op;
@@ -26,7 +25,7 @@ int main(){
     
     int op;
     int sair = 0;
-    int ret;
+    int ret, valor=0, posicao=0, tamanho=0;
 
     atribuiNULL();
 
@@ -40,7 +39,12 @@ int main(){
                 break;
             }
             case 1:{
-                ret = inserirNumeroEmEstrutura(25, 5);
+            	//recebe valor e posicao
+            	capturaValor(&valor);
+            	capturaPosicao(&posicao);
+
+                ret = inserirNumeroEmEstrutura(valor, posicao);
+
                 if (ret == SUCESSO){
                 	limpaTela();
                     puts("Inserido com sucesso");
@@ -64,20 +68,40 @@ int main(){
             
             case 3:{ //listar tudo                        
                 limpaTela();
+
                 //cria um laço com a função listaEstruturaAuxiliar
-                for(int i=0; i<TAM; i++){
-                    if(listaEstruturaAuxiliar(i) != SUCESSO)
-                        printf("Estrutura Auxiliar %d nao implementada\n", i);
+                for(int i=1; i<=TAM; i++){
+                    
+                    listaEstruturaAuxiliar(i);            
 
                     puts("");
-                    quebraPagina();
+                    //quebraPagina();
                 }
 
                 break;
             }
 
             case 4:{ //Ordenar e listar
-                //TODO
+            	//recebe a posicao
+            	capturaPosicao(&posicao);
+
+                ret = ordenaVetor(posicao);
+
+                if(ret==SUCESSO){
+                	
+                	puts("Ordenado com Sucesso");
+                	
+                	listaEstruturaAuxiliar(5);
+                	
+                	puts("");
+                }
+
+                else if(ret==POSICAO_INVALIDA)
+                	puts("Posicao Invalida");
+
+                else
+                	puts("A estrutura auxiliar nao foi implementada");
+                
                 break;
             }
 
@@ -92,7 +116,11 @@ int main(){
             }
 
             case 7:{//Criar estrutura Auxiliar
-                ret = criarEstruturaAuxiliar(3, 5);
+
+            	capturaTamanho(&tamanho);
+            	capturaPosicao(&posicao);
+
+                ret = criarEstruturaAuxiliar(tamanho, posicao);
 
                 if(ret == SUCESSO){
                     limpaTela();

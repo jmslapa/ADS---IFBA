@@ -18,3 +18,7 @@ int ehPosicaoValida(int posicao);
 void limpaTela();
 void quebraPagina();
 void liberaMemoria();
+int ordenaVetor(int posicao);
+void capturaPosicao(int *posicao);
+void capturaValor(int *valor);
+void capturaTamanho(int *tamanho);

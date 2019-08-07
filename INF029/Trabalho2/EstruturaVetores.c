@@ -105,6 +105,8 @@ int listaEstruturaAuxiliar(int posicao){
     int retorno = 0;
 
     if (vetorPrincipal[posicao-1].vetorAuxiliar == NULL){
+        printf("Estrutura Auxiliar %d nao implementada\n", posicao);
+
         retorno = SEM_ESTRUTURA_AUXILIAR;
     }else{
         //print    
@@ -134,4 +136,68 @@ void quebraPagina(){
 void liberaMemoria(){
     for(int i=0; i < TAM; i++)
         free(vetorPrincipal[i].vetorAuxiliar);
+}
+
+int ordenaVetor(int posicao){
+
+    int i,j,aux;
+
+
+    if(ehPosicaoValida(posicao) != SUCESSO)
+        return POSICAO_INVALIDA;
+
+    else{
+        
+        if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL){
+        
+            for(i=1; i < vetorPrincipal[posicao-1].tamanho; i++){
+        
+                aux = vetorPrincipal[posicao-1].vetorAuxiliar[i];
+        
+                for(j=i-1; j >= 0 && vetorPrincipal[posicao-1].vetorAuxiliar[j] > aux; j--){
+        
+                    vetorPrincipal[posicao-1].vetorAuxiliar[j+1] = vetorPrincipal[posicao-1].vetorAuxiliar[j];
+                }
+        
+                vetorPrincipal[posicao-1].vetorAuxiliar[j+1]=aux;
+            }
+    
+            return SUCESSO;
+        }
+
+        else
+            return SEM_ESTRUTURA_AUXILIAR;
+    }
+}
+
+
+void capturaValor(int *valor){
+
+    int n;
+
+    puts("Informe o valor");
+    scanf("%d", &n);
+
+    *valor=n;
+               
+}
+
+void capturaPosicao(int *posicao){
+
+    int n;
+
+    puts("Informe qual a Estrutura Auxiliar");
+    scanf("%d", &n);
+
+    *posicao=n;
+}
+
+void capturaTamanho(int *tamanho){
+
+    int n;
+
+    puts("Informe o tamanho da Estrutura Auxiliar");
+    scanf("%d", &n);
+
+    *tamanho=n;
 }
