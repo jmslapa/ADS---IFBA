@@ -73,6 +73,7 @@ int main(){
             	if(ret == SUCESSO){
             		limpaTela();
             		puts("Excluido com sucesso");
+                    listaEstruturaAuxiliar(posicao);
                 }else if(ret == VALOR_INVALIDO){
                 	limpaTela();
             		puts("Valor Invalido");
@@ -90,10 +91,7 @@ int main(){
                 //cria um laço com a função listaEstruturaAuxiliar
                 for(int i=1; i<=TAM; i++){
                     
-                    listaEstruturaAuxiliar(i);            
-
-                    puts("");
-                    //quebraPagina();
+                    listaEstruturaAuxiliar(i);
                 }
 
                 break;
@@ -109,9 +107,7 @@ int main(){
                 	
                 	puts("Ordenado com Sucesso");
                 	
-                	listaEstruturaAuxiliar(5);
-                	
-                	puts("");
+                	listaEstruturaAuxiliar(posicao);
                 }
 
                 else if(ret==POSICAO_INVALIDA)

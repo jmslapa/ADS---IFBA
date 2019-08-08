@@ -75,18 +75,11 @@ int excluirNumeroEmEstrutura(int valor, int posicao){
 
         if(indiceEstruturaAuxiliar == VALOR_INVALIDO)
             return VALOR_INVALIDO;
+
         else{
 
-            if(indiceEstruturaAuxiliar == (vetorPrincipal[posicao-1].tamanho) - 1){
-                
-                vetorPrincipal[posicao-1].tamanho--;
-                vetorPrincipal[posicao-1].preenchido--;
+            if(indiceEstruturaAuxiliar == (vetorPrincipal[posicao-1].preenchido) - 1){
 
-                return SUCESSO;
-
-            }else if(indiceEstruturaAuxiliar == (vetorPrincipal[posicao-1].preenchido) - 1){
-
-                vetorPrincipal[posicao-1].tamanho--;
                 vetorPrincipal[posicao-1].preenchido--;
 
                 return SUCESSO;
@@ -94,7 +87,7 @@ int excluirNumeroEmEstrutura(int valor, int posicao){
             }else{
 
                 shiftEsquerda(posicao, indiceEstruturaAuxiliar);
-                vetorPrincipal[posicao-1].tamanho--;
+                
                 vetorPrincipal[posicao-1].preenchido--;
 
                 return SUCESSO;                
@@ -153,7 +146,7 @@ int listaEstruturaAuxiliar(int posicao){
     int retorno = 0;
 
     if (vetorPrincipal[posicao-1].vetorAuxiliar == NULL){
-        printf("Estrutura Auxiliar %d nao implementada\n", posicao);
+        printf("Estrutura Auxiliar %d nao implementada\n\n", posicao);
 
         retorno = SEM_ESTRUTURA_AUXILIAR;
     }else{
@@ -161,10 +154,16 @@ int listaEstruturaAuxiliar(int posicao){
         printf("Estrutura Auxiliar %d:\n", posicao);
         printf("Tamanho: %d\n", vetorPrincipal[posicao-1].tamanho);
         printf("Posicoes disponiveis: %d\n", vetorPrincipal[posicao-1].tamanho - vetorPrincipal[posicao-1].preenchido);
-        puts("Informacoes armazenadas: \n");
 
-        for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++)
-            printf("Posicao %d: %d\n", i+1, vetorPrincipal[posicao-1].vetorAuxiliar[i]);
+        if(vetorPrincipal[posicao-1].preenchido != 0){
+            puts("Informacoes armazenadas: \n");
+    
+            for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++)
+                printf("Posicao %d: %d\n", i+1, vetorPrincipal[posicao-1].vetorAuxiliar[i]);
+        }else
+            puts("Sem informações armazenadas");
+
+        puts("");
 
         retorno = SUCESSO;
     }   
@@ -220,27 +219,16 @@ int ordenaVetor(int posicao){
 
 int buscaElemento(int elemento, int posicao){
 
-    int inicio, meio, fim;
+    int i, indice;
 
-    inicio = 0;
-    fim = (vetorPrincipal[posicao-1].tamanho) - 1;
+    for(i=0; i < vetorPrincipal[posicao-1].preenchido; i++){
 
-    while(inicio <= fim){
-
-        meio = (inicio + fim)/2;
-
-        if(vetorPrincipal[posicao-1].vetorAuxiliar[meio] == elemento)
-            return meio;
-
-        else if(vetorPrincipal[posicao-1].vetorAuxiliar[meio] < meio)
-            fim=meio-1;
-        
-        else
-            inicio=meio+1;
+        if(vetorPrincipal[posicao-1].vetorAuxiliar[i] == elemento){
+            return i;
+        }
     }
 
     return VALOR_INVALIDO;
-
 }
 
 
