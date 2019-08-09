@@ -211,8 +211,11 @@ void quebraPagina(){
 }
 
 void liberaMemoria(){
-    for(int i=0; i < TAM; i++)
-        free(vetorPrincipal[i].vetorAuxiliar);
+    for(int i=0; i < TAM; i++){
+        
+        if(vetorPrincipal[i].vetorAuxiliar!=NULL)
+            free(vetorPrincipal[i].vetorAuxiliar);
+    }
 }
 
 int ordenaVetor(int posicao){
