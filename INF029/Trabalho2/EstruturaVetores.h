@@ -25,3 +25,4 @@ void capturaTamanho(int *tamanho);
 int excluirNumeroEmEstrutura(int valor, int posicao);
 int buscaElemento(int elemento, int posicao);
 void shiftEsquerda(int posicao, int posicaoElemento);
+int aumentarEstruturaAuxiliar(int tamanho, int posicao);

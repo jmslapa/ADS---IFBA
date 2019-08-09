@@ -130,6 +130,36 @@ int inserirNumeroEmEstrutura(int valor, int posicao){
 
 }
 
+int aumentarEstruturaAuxiliar(int tamanho, int posicao){
+
+    //testa se a posicao eh valida
+    if(ehPosicaoValida(posicao) != SUCESSO)
+        return POSICAO_INVALIDA;
+    
+    else{
+        
+        //testa se o tamanho é um numero maior que 0
+        if(vetorPrincipal[posicao-1].tamanho + tamanho <= vetorPrincipal[posicao-1].tamanho)
+            return TAMANHO_INVALIDO;
+
+        //testa se o tamanho da Estrutura Auxiliar não vai ultrapassar o tamanho máximo de posições
+        else if(vetorPrincipal[posicao-1].tamanho + tamanho > TAM_MAX_ESTRUTURA_AUXILIAR)
+            return SEM_ESPACO_DE_MEMORIA;
+
+        //deu certo, realiza operação
+        else{
+
+            vetorPrincipal[posicao-1].vetorAuxiliar = (int*) realloc(vetorPrincipal[posicao-1].vetorAuxiliar, sizeof(int) * tamanho);
+
+            vetorPrincipal[posicao-1].tamanho += tamanho; 
+
+            return SUCESSO;           
+        }        
+
+    }
+
+}
+
 // se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao){
     int retorno = 0;
@@ -231,10 +261,6 @@ int buscaElemento(int elemento, int posicao){
     return VALOR_INVALIDO;
 }
 
-
-
-
-
 void capturaValor(int *valor){
 
     int n;
@@ -250,7 +276,7 @@ void capturaPosicao(int *posicao){
 
     int n;
 
-    puts("Informe qual a Estrutura Auxiliar");
+    puts("Informe qual a posicao da Estrutura Auxiliar");
     scanf("%d", &n);
 
     *posicao=n;
@@ -260,7 +286,7 @@ void capturaTamanho(int *tamanho){
 
     int n;
 
-    puts("Informe o tamanho da Estrutura Auxiliar");
+    puts("Informe a quantidade de posicoes na Estrutura Auxiliar");
     scanf("%d", &n);
 
     *tamanho=n;

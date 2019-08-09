@@ -8,6 +8,8 @@ int menu();
 
 int menu(){
     int op;
+
+
     printf("Digite a opção desejada\n");
     printf("0 - Sair\n");
     printf("1 - Inserir\n");
@@ -47,16 +49,16 @@ int main(){
 
                 if (ret == SUCESSO){
                 	limpaTela();
-                    puts("Inserido com sucesso");
+                    puts("Inserido com sucesso\n");
                 }else if (ret == SEM_ESPACO){
                     limpaTela();
-                	puts("Sem Espaço");
+                	puts("Sem Espaço\n");
                 }else if (ret == SEM_ESTRUTURA_AUXILIAR){
                 	limpaTela();
-                    puts("Sem estrutura Auxiliar");
+                    printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
                 }else{
                 	limpaTela();
-                    puts("Posicao invalida");
+                    puts("Posicao invalida\n");
                 }
                 break;
             }
@@ -72,14 +74,14 @@ int main(){
             	//chama função de excluir
             	if(ret == SUCESSO){
             		limpaTela();
-            		puts("Excluido com sucesso");
+            		puts("Excluido com sucesso\n");
                     listaEstruturaAuxiliar(posicao);
                 }else if(ret == VALOR_INVALIDO){
                 	limpaTela();
-            		puts("Valor Invalido");
+            		puts("Valor Invalido\n");
                 }else{
                 	limpaTela();
-                    puts("Posicao invalida");
+                    puts("Posicao invalida\n");
                 }
 
                 break;
@@ -89,9 +91,9 @@ int main(){
                 limpaTela();
 
                 //cria um laço com a função listaEstruturaAuxiliar
-                for(int i=1; i<=TAM; i++){
+                for(posicao=1; posicao<=TAM; posicao++){
                     
-                    listaEstruturaAuxiliar(i);
+                    listaEstruturaAuxiliar(posicao);
                 }
 
                 break;
@@ -103,29 +105,70 @@ int main(){
 
                 ret = ordenaVetor(posicao);
 
+                limpaTela();
+
                 if(ret==SUCESSO){
                 	
-                	puts("Ordenado com Sucesso");
+                	puts("Ordenado com Sucesso\n");
                 	
                 	listaEstruturaAuxiliar(posicao);
                 }
 
                 else if(ret==POSICAO_INVALIDA)
-                	puts("Posicao Invalida");
+                	puts("Posicao Invalida\n");
 
                 else
-                	puts("A estrutura auxiliar nao foi implementada");
+                	printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
                 
                 break;
             }
 
             case 5:{ //Ordenar e listar tudo
-                //TODO
+                
+                limpaTela();                
+
+                for(posicao=1; posicao <= TAM; posicao++){
+                
+                    ret = ordenaVetor(posicao);
+    
+                    if(ret==SUCESSO){
+                        
+                        puts("Ordenado com Sucesso\n");
+                        
+                        listaEstruturaAuxiliar(posicao);
+                    }
+    
+                    else if(ret==POSICAO_INVALIDA)
+                        puts("Posicao Invalida\n");
+    
+                    else
+                        printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+                }        
+                        
                 break;
             }
 
             case 6:{ //Aumentar tamanho da lista
-                //TODO
+                //recebe tamanho e posicao da Estrutura Auxiliar
+                capturaTamanho(&tamanho);
+                capturaPosicao(&posicao);
+
+                ret = aumentarEstruturaAuxiliar(tamanho, posicao);
+
+                if(ret == SUCESSO){
+                    limpaTela();
+                    puts("Aumentado com sucesso\n");
+                }else if(ret == TAMANHO_INVALIDO){
+                    limpaTela();
+                    puts("Quantidade de posicoes menor que 1\n");
+                }else if(ret == SEM_ESPACO_DE_MEMORIA){
+                    limpaTela();
+                    puts("O tamanho da Estrutura Auxiliar ultrapassou o maximo permitido\n");
+                }else{
+                    limpaTela();
+                    puts("Posicao invalida\n");
+                }
+
                 break;
             }
 
@@ -138,22 +181,23 @@ int main(){
 
                 if(ret == SUCESSO){
                     limpaTela();
-                    puts("Criado com sucesso");
+                    puts("Criado com sucesso\n");
                 }else if(ret == TAMANHO_INVALIDO){
                     limpaTela();
-                    puts("Tamanho invalido");
+                    puts("Quantidade de posicoes menor que 1\n");
                 }else if(ret == SEM_ESPACO_DE_MEMORIA){
                     limpaTela();
-                    puts("Estrutura muito grande, sem espaço na memória");
+                    puts("O tamanho da Estrutura Auxiliar ultrapassou o maximo permitido\n");
                 }else{
                     limpaTela();
-                    puts("Posicao invalida");
+                    puts("Posicao invalida\n");
                 }
                 break;
             }
 
             default:{
-                printf("opcao inválida\n");
+                limpaTela();
+                puts("Opcao inválida\n");
             }
 
             
