@@ -31,25 +31,29 @@ int criarEstruturaAuxiliar(int tamanho, int posicao){
     int retorno = 0;
     //testar se existe a estrutura auxiliar
     
-
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
-    // se posição é um valor válido {entre 1 e 10}
-    if (ehPosicaoValida(posicao)==POSICAO_INVALIDA)
-            retorno = POSICAO_INVALIDA;
+    if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL)
+        retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+   
     else{
-        //testar se o tamanho informado é menor que o limite
-        if(tamanho>TAM_MAX_ESTRUTURA_AUXILIAR)
-            retorno = SEM_ESPACO_DE_MEMORIA;
+        //testar se posição é um valor válido {entre 1 e 10}
+        if (ehPosicaoValida(posicao)==POSICAO_INVALIDA)
+            retorno = POSICAO_INVALIDA;
+        
         else{
-            //testar se o tamanho não é menor que 1
-            if(tamanho<1)
-                retorno = TAMANHO_INVALIDO;
+            //testar se o tamanho informado é menor que o limite
+            if(tamanho>TAM_MAX_ESTRUTURA_AUXILIAR)
+                retorno = SEM_ESPACO_DE_MEMORIA;
             else{
-                // deu tudo certo, crie
-                vetorPrincipal[posicao-1].vetorAuxiliar = (int*) malloc(tamanho * sizeof(int));
-                vetorPrincipal[posicao-1].tamanho = tamanho;
-                
-                retorno = SUCESSO;
+                //testar se o tamanho não é menor que 1
+                if(tamanho<1)
+                    retorno = TAMANHO_INVALIDO;
+                else{
+                    // deu tudo certo, crie
+                    vetorPrincipal[posicao-1].vetorAuxiliar = (int*) malloc(tamanho * sizeof(int));
+                    vetorPrincipal[posicao-1].tamanho = tamanho;
+                    
+                    retorno = SUCESSO;
+                }
             }
         }
     }
@@ -66,9 +70,6 @@ int excluirNumeroEmEstrutura(int valor, int posicao){
         return POSICAO_INVALIDA;
     
     else{
-
-        //ordena o vetor auxiliar
-        ordenaVetor(posicao);
 
         //testa se o valor informado existe na estrutura auxiliar
         indiceEstruturaAuxiliar = buscaElemento(valor, posicao);
@@ -162,13 +163,11 @@ int aumentarEstruturaAuxiliar(int tamanho, int posicao){
 
 // se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao){
-    int retorno = 0;
-    if (posicao < 1 || posicao > 10){
-        retorno = POSICAO_INVALIDA;
-    }else retorno = SUCESSO;
-
-    return retorno;
-
+   
+    if (posicao > 0 && posicao <=10){
+        return SUCESSO;
+    }else
+        return POSICAO_INVALIDA;
 }
 
 int listaEstruturaAuxiliar(int posicao){
@@ -230,15 +229,15 @@ int ordenaVetor(int posicao){
         
         if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL){
         
-            for(i=1; i < vetorPrincipal[posicao-1].tamanho; i++){
-        
-                aux = vetorPrincipal[posicao-1].vetorAuxiliar[i];
-        
-                for(j=i-1; j >= 0 && vetorPrincipal[posicao-1].vetorAuxiliar[j] > aux; j--){
-        
-                    vetorPrincipal[posicao-1].vetorAuxiliar[j+1] = vetorPrincipal[posicao-1].vetorAuxiliar[j];
+            for(i=1; i < vetorPrincipal[posicao-1].preenchido; i++){
+
+                aux=vetorPrincipal[posicao-1].vetorAuxiliar[i];
+
+                for(j=i-1; (vetorPrincipal[posicao-1].vetorAuxiliar[j])>=0 && (vetorPrincipal[posicao-1].vetorAuxiliar[j])>aux; j--){
+
+                    vetorPrincipal[posicao-1].vetorAuxiliar[j+1]=vetorPrincipal[posicao-1].vetorAuxiliar[j];
                 }
-        
+
                 vetorPrincipal[posicao-1].vetorAuxiliar[j+1]=aux;
             }
     

@@ -68,6 +68,9 @@ int main(){
             	capturaValor(&valor);
             	capturaPosicao(&posicao);
 
+                printf("tamanho informado: %d\n", tamanho);
+                printf("posicao informada: %d\n", posicao);
+
             	//define retorno
             	ret = excluirNumeroEmEstrutura(valor, posicao);
 
@@ -179,6 +182,8 @@ int main(){
 
                 ret = criarEstruturaAuxiliar(tamanho, posicao);
 
+                printf("ret: %d\n", ret);
+
                 if(ret == SUCESSO){
                     limpaTela();
                     puts("Criado com sucesso\n");
@@ -188,6 +193,9 @@ int main(){
                 }else if(ret == SEM_ESPACO_DE_MEMORIA){
                     limpaTela();
                     puts("O tamanho da Estrutura Auxiliar ultrapassou o maximo permitido\n");
+                }else if(ret == JA_TEM_ESTRUTURA_AUXILIAR){
+                    limpaTela();
+                    printf("A Estrutura auxiliar %d ja existe\n\n", posicao);
                 }else{
                     limpaTela();
                     puts("Posicao invalida\n");
