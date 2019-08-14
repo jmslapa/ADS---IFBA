@@ -138,25 +138,30 @@ int aumentarEstruturaAuxiliar(int tamanho, int posicao){
         return POSICAO_INVALIDA;
     
     else{
-        
-        //testa se o tamanho é um numero maior que 0
-        if(vetorPrincipal[posicao-1].tamanho + tamanho <= vetorPrincipal[posicao-1].tamanho)
-            return TAMANHO_INVALIDO;
-
-        //testa se o tamanho da Estrutura Auxiliar não vai ultrapassar o tamanho máximo de posições
-        else if(vetorPrincipal[posicao-1].tamanho + tamanho > TAM_MAX_ESTRUTURA_AUXILIAR)
-            return SEM_ESPACO_DE_MEMORIA;
-
-        //deu certo, realiza operação
+        //testa se a estrutura auxiliar existe
+        if(vetorPrincipal[posicao-1].vetorAuxiliar == NULL)
+            return SEM_ESTRUTURA_AUXILIAR;
         else{
+            //testa se o tamanho é um numero maior que 0
+            if(vetorPrincipal[posicao-1].tamanho + tamanho <= vetorPrincipal[posicao-1].tamanho)
+                return TAMANHO_INVALIDO;
+            else{
+                
+                //testa se o tamanho da Estrutura Auxiliar não vai ultrapassar o tamanho máximo de posições
+                if(vetorPrincipal[posicao-1].tamanho + tamanho > TAM_MAX_ESTRUTURA_AUXILIAR)
+                    return SEM_ESPACO_DE_MEMORIA;
 
-            vetorPrincipal[posicao-1].vetorAuxiliar = (int*) realloc(vetorPrincipal[posicao-1].vetorAuxiliar, sizeof(int) * tamanho);
+                //deu certo, realiza operação
+                else{
 
-            vetorPrincipal[posicao-1].tamanho += tamanho; 
+                    vetorPrincipal[posicao-1].vetorAuxiliar = (int*) realloc(vetorPrincipal[posicao-1].vetorAuxiliar, sizeof(int) * tamanho);
 
-            return SUCESSO;           
-        }        
+                    vetorPrincipal[posicao-1].tamanho += tamanho; 
 
+                    return SUCESSO;           
+                }        
+            }
+        }
     }
 
 }
@@ -173,29 +178,34 @@ int ehPosicaoValida(int posicao){
 int listaEstruturaAuxiliar(int posicao){
     
     int retorno = 0;
-
-    if (vetorPrincipal[posicao-1].vetorAuxiliar == NULL){
-        printf("Estrutura Auxiliar %d nao implementada\n\n", posicao);
-
-        retorno = SEM_ESTRUTURA_AUXILIAR;
-    }else{
-        //print    
-        printf("Estrutura Auxiliar %d:\n", posicao);
-        printf("Tamanho: %d\n", vetorPrincipal[posicao-1].tamanho);
-        printf("Posicoes disponiveis: %d\n", vetorPrincipal[posicao-1].tamanho - vetorPrincipal[posicao-1].preenchido);
-
-        if(vetorPrincipal[posicao-1].preenchido != 0){
-            puts("Informacoes armazenadas: \n");
     
-            for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++)
-                printf("Posicao %d: %d\n", i+1, vetorPrincipal[posicao-1].vetorAuxiliar[i]);
-        }else
-            puts("Sem informações armazenadas");
+    if(ehPosicaoValida(posicao) != SUCESSO)
+        retorno = POSICAO_INVALIDA;
+   
+    else{
+        
+        if (vetorPrincipal[posicao-1].vetorAuxiliar == NULL){      
+            printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+            retorno = SUCESSO;
+        }else{
+            //print    
+            printf("Estrutura Auxiliar %d:\n", posicao);
+            printf("Tamanho: %d\n", vetorPrincipal[posicao-1].tamanho);
+            printf("Posicoes disponiveis: %d\n", vetorPrincipal[posicao-1].tamanho - vetorPrincipal[posicao-1].preenchido);
 
-        puts("");
+            if(vetorPrincipal[posicao-1].preenchido != 0){
+                puts("Informacoes armazenadas: \n");
+        
+                for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++)
+                    printf("Posicao %d: %d\n", i+1, vetorPrincipal[posicao-1].vetorAuxiliar[i]);
+            }else
+                puts("Sem informações armazenadas");
 
-        retorno = SUCESSO;
-    }   
+            puts("");
+
+            retorno = SUCESSO;
+        }
+    }
 
     return retorno;
 

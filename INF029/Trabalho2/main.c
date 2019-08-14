@@ -14,11 +14,12 @@ int menu(){
     printf("0 - Sair\n");
     printf("1 - Inserir\n");
     printf("2 - Excluir\n");
-    printf("3 - Listar Tudo\n");
-    printf("4 - Ordenar e listar\n");
-    printf("5 - Ordenar e listar tudo\n");
-    printf("6 - Aumentar tamanho da Estrutura Auxiliar\n");
-    printf("7 - Criar Estrutura Auxiliar\n");
+    printf("3 - Listar\n");
+    printf("4 - Listar Tudo\n");
+    printf("5 - Ordenar e listar\n");
+    printf("6 - Ordenar e listar tudo\n");
+    printf("7 - Aumentar tamanho da Estrutura Auxiliar\n");
+    printf("8 - Criar Estrutura Auxiliar\n");
     scanf("%d", &op);
     return op;
 }
@@ -62,14 +63,11 @@ int main(){
                 }
                 break;
             }
-
+            
             case 2:{ //excluir
             	//recebe valor e posicao
             	capturaValor(&valor);
             	capturaPosicao(&posicao);
-
-                printf("tamanho informado: %d\n", tamanho);
-                printf("posicao informada: %d\n", posicao);
 
             	//define retorno
             	ret = excluirNumeroEmEstrutura(valor, posicao);
@@ -88,9 +86,29 @@ int main(){
                 }
 
                 break;
+            }            
+
+            case 3:{ //listar
+            	//recebe posicao
+            	capturaPosicao(&posicao);
+                
+                //define retorno
+                ret = listaEstruturaAuxiliar(posicao);
+                
+                if(ret == SUCESSO){
+                    limpaTela();
+                    listaEstruturaAuxiliar(posicao);                    
+                    
+                }else{
+                    limpaTela();
+                    printf("Posicao Invalida\n\n", posicao);                                        
+                }
+                    
+                
+                break;
             }
             
-            case 3:{ //listar tudo                        
+            case 4:{ //listar tudo                        
                 limpaTela();
 
                 //cria um laço com a função listaEstruturaAuxiliar
@@ -102,7 +120,7 @@ int main(){
                 break;
             }
 
-            case 4:{ //Ordenar e listar
+            case 5:{ //Ordenar e listar
             	//recebe a posicao
             	capturaPosicao(&posicao);
 
@@ -126,7 +144,7 @@ int main(){
                 break;
             }
 
-            case 5:{ //Ordenar e listar tudo
+            case 6:{ //Ordenar e listar tudo
                 
                 limpaTela();                
 
@@ -151,7 +169,7 @@ int main(){
                 break;
             }
 
-            case 6:{ //Aumentar tamanho da lista
+            case 7:{ //Aumentar tamanho da lista
                 //recebe tamanho e posicao da Estrutura Auxiliar
                 capturaTamanho(&tamanho);
                 capturaPosicao(&posicao);
@@ -161,6 +179,9 @@ int main(){
                 if(ret == SUCESSO){
                     limpaTela();
                     puts("Aumentado com sucesso\n");
+                }else if(ret == SEM_ESTRUTURA_AUXILIAR){
+                    limpaTela();
+                    printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
                 }else if(ret == TAMANHO_INVALIDO){
                     limpaTela();
                     puts("Quantidade de posicoes menor que 1\n");
@@ -175,7 +196,7 @@ int main(){
                 break;
             }
 
-            case 7:{//Criar estrutura Auxiliar
+            case 8:{//Criar estrutura Auxiliar
 
             	capturaTamanho(&tamanho);
             	capturaPosicao(&posicao);
