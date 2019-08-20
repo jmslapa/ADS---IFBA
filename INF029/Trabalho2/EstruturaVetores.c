@@ -48,22 +48,21 @@ int criarEstruturaAuxiliar(int tamanho, int posicao){
         //testar se posição é um valor válido {entre 1 e 10}
         if (ehPosicaoValida(posicao)==POSICAO_INVALIDA)
             retorno = POSICAO_INVALIDA;
-        
+    
         else{
-            //testar se o tamanho informado é menor que o limite
-            if(tamanho>TAM_MAX_ESTRUTURA_AUXILIAR)
-                retorno = SEM_ESPACO_DE_MEMORIA;
+            //testar se o tamanho não é menor que 1
+            if(tamanho<1)
+                retorno = TAMANHO_INVALIDO;
             else{
-                //testar se o tamanho não é menor que 1
-                if(tamanho<1)
-                    retorno = TAMANHO_INVALIDO;
-                else{
-                    // deu tudo certo, crie
-                    vetorPrincipal[posicao-1].vetorAuxiliar = (int*) malloc(tamanho * sizeof(int));
+                // deu tudo certo, crie
+                vetorPrincipal[posicao-1].vetorAuxiliar = (int*) malloc(tamanho * sizeof(int));
+
+                //testa se a alocação ocorreu corretamente
+                if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL){
                     vetorPrincipal[posicao-1].tamanho = tamanho;
-                    
                     retorno = SUCESSO;
-                }
+                }else
+                    retorno = SEM_ESPACO_DE_MEMORIA;
             }
         }
     }
@@ -211,10 +210,14 @@ Rertono (int)
     SUCESSO - foi modificado corretamente o tamanho da estrutura auxiliar
     SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
-    NOVO_TAMANHO_INVALIDO - novo tamanho não pode ser negativo
+    NOVO_TAMANHO_INVALIDO - novo tamanho não pode ser menor que 1
+    *SEM_ESPACO_DE_MEMORIA - Realocação de memória falhou
 */
-int modificarTamanhoEstruturaAuxiliar(int tamanho, int posicao){
+int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho){
 
+    //define o novo tamanho da estrutura
+    novoTamanho = vetorPrincipal[posicao-1].tamanho + novoTamanho;
+    
     //testa se a posicao eh valida
     if(ehPosicaoValida(posicao) != SUCESSO)
         return POSICAO_INVALIDA;
@@ -224,23 +227,22 @@ int modificarTamanhoEstruturaAuxiliar(int tamanho, int posicao){
         if(vetorPrincipal[posicao-1].vetorAuxiliar == NULL)
             return SEM_ESTRUTURA_AUXILIAR;
         else{
-            //testa se o tamanho é um numero maior que 0
-            if(vetorPrincipal[posicao-1].tamanho + tamanho <= vetorPrincipal[posicao-1].tamanho)
+            //testa se o novo tamanho é um numero maior ou igual a 1
+            if(vetorPrincipal[posicao-1].tamanho + novoTamanho < 1)
                 return NOVO_TAMANHO_INVALIDO;
             else{
-                
-                //testa se o tamanho da Estrutura Auxiliar não vai ultrapassar o tamanho máximo de posições
-                if(vetorPrincipal[posicao-1].tamanho + tamanho > TAM_MAX_ESTRUTURA_AUXILIAR)
-                    return SEM_ESPACO_DE_MEMORIA;
+                //realiza realocação de memória
+                vetorPrincipal[posicao-1].vetorAuxiliar = (int*) realloc(vetorPrincipal[posicao-1].vetorAuxiliar, sizeof(int) * novoTamanho);
 
-                //deu certo, realiza operação
-                else{
+                //testa se a realocação foi realizada com sucesso
+                if(vetorPrincipal[posicao-1].vetorAuxiliar == NULL)
+                    return SEM_ESPACO_DE_MEMORIA;                
+                else{                    
 
-                    vetorPrincipal[posicao-1].vetorAuxiliar = (int*) realloc(vetorPrincipal[posicao-1].vetorAuxiliar, sizeof(int) * tamanho);
-
-                    vetorPrincipal[posicao-1].tamanho += tamanho; 
+                    vetorPrincipal[posicao-1].tamanho = novoTamanho; 
+                    if(vetorPrincipal[posicao-1].tamanho < vetorPrincipal[posicao-1].preenchido)
+                        vetorPrincipal[posicao-1].preenchido = vetorPrincipal[posicao-1].tamanho;
                     
-
                     return SUCESSO;           
                 }        
             }
@@ -266,8 +268,10 @@ Retorno (int)
     SUCESSO - recuperado com sucesso os valores da estrutura na posição 'posicao'
     SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
+    *ESTRUTURA_AUXILIAR_VAZIA - A estrutura não possui dados a serem listados
+    *SEM_ESPACO_DE_MEMORIA - Alocação dinâmica do vetor que armazenará os dados falhou
 */
-int getDadosEstruturaAuxiliar(int posicao){
+int getDadosEstruturaAuxiliar(int posicao, int vetorAux[], int *tamAux){
     
     int retorno = 0;
     
@@ -276,27 +280,32 @@ int getDadosEstruturaAuxiliar(int posicao){
         retorno = POSICAO_INVALIDA;
    
     else{
-        
+        //testa se existe estrutura auxiliar
         if (vetorPrincipal[posicao-1].vetorAuxiliar == NULL){      
-            //printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
             retorno = SEM_ESTRUTURA_AUXILIAR;
         }else{
-            //print    
-            printf("Estrutura Auxiliar %d:\n", posicao);
-            printf("Tamanho: %d\n", vetorPrincipal[posicao-1].tamanho);
-            printf("Posicoes disponiveis: %d\n", vetorPrincipal[posicao-1].tamanho - vetorPrincipal[posicao-1].preenchido);
+            //testa se a estrutura auxiliar está vazia
+            if(vetorPrincipal[posicao-1].preenchido == 0)
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
+            else{
+                //aloca memória para o vetor auxiliar que armazenará os elementos da Estrutura Auxiliar
+                
+                vetorAux = (int*) malloc(vetorPrincipal[posicao-1].preenchido * sizeof(int));
+                
+                //testa se a alocação ocorreu corretamente
+                if(vetorAux == NULL)
+                    retorno = SEM_ESPACO_DE_MEMORIA;
+                else{
 
-            if(vetorPrincipal[posicao-1].preenchido != 0){
-                puts("Informacoes armazenadas: \n");
-        
-                for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++)
-                    printf("Posicao %d: %d\n", i+1, vetorPrincipal[posicao-1].vetorAuxiliar[i]);
-            }else
-                puts("Sem informações armazenadas");
+                    for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++){
+                        vetorAux[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i];
+                    }
 
-            puts("");
-
-            retorno = SUCESSO;
+                    *tamAux = vetorPrincipal[posicao-1].preenchido;
+                    
+                    retorno = SUCESSO;
+                }
+            }
         }
     }
 
@@ -304,15 +313,7 @@ int getDadosEstruturaAuxiliar(int posicao){
 
 }
 
-void limpaTela(){
-    system("clear");
-}
-
-void quebraPagina(){
-    printf("*\n*\n");
-}
-
-void liberaMemoria(){
+void liberarEspacosEstruturasAuxiliares(){
     for(int i=0; i < TAM; i++){
         
         if(vetorPrincipal[i].vetorAuxiliar!=NULL)
@@ -373,37 +374,6 @@ int buscaElemento(int elemento, int posicao){
     }
 
     return NUMERO_INEXISTENTE;
-}
-
-void capturaValor(int *valor){
-
-    int n;
-
-    puts("Informe o valor");
-    scanf("%d", &n);
-
-    *valor=n;
-               
-}
-
-void capturaPosicao(int *posicao){
-
-    int n;
-
-    puts("Informe qual a posicao da Estrutura Auxiliar");
-    scanf("%d", &n);
-
-    *posicao=n;
-}
-
-void capturaTamanho(int *tamanho){
-
-    int n;
-
-    puts("Informe a quantidade de posicoes na Estrutura Auxiliar");
-    scanf("%d", &n);
-
-    *tamanho=n;
 }
 
 void shiftEsquerda(int posicao, int posicaoElemento){

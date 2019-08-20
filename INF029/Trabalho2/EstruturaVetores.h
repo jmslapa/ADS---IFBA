@@ -1,5 +1,4 @@
 #define TAM 10
-#define TAM_MAX_ESTRUTURA_AUXILIAR 100
 
 #define SUCESSO 1
 #define SEM_ESPACO 2
@@ -15,18 +14,13 @@
 
 int criarEstruturaAuxiliar(int tamanho, int posicao);
 int inserirNumeroEmEstrutura(int valor, int posicao);
-int getDadosEstruturaAuxiliar(int posicao);
+int getDadosEstruturaAuxiliar(int posicao, int vetorAux[], int *tamAux);
 void atribuiNULL();
 int ehPosicaoValida(int posicao);
-void limpaTela();
-void quebraPagina();
-void liberaMemoria();
+void liberarEspacosEstruturasAuxiliares();
 int ordenaVetor(int posicao);
-void capturaPosicao(int *posicao);
-void capturaValor(int *valor);
-void capturaTamanho(int *tamanho);
 int excluirNumeroDoFinaldaEstrutura(int posicao);
 int excluirNumeroEspecificoDeEstrutura(int valor, int posicao);
 int buscaElemento(int elemento, int posicao);
 void shiftEsquerda(int posicao, int posicaoElemento);
-int modificarTamanhoEstruturaAuxiliar(int tamanho, int posicao);
+int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho);

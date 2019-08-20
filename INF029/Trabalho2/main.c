@@ -4,32 +4,20 @@
 #include "EstruturaVetores.h"
 
 int menu();
+void limpaTela();
+void capturaPosicao(int *posicao);
+void capturaValor(int *valor);
+void capturaTamanho(int *tamanho);
+void captura_novoTamanho(int *novoTamanho);
+void imprimeEstruturaAuxiliar(int posicao, int *vetor, int tamanho);
 
-
-int menu(){
-    int op;
-
-
-    printf("Digite a opção desejada\n");
-    printf("0 - Sair\n");
-    printf("1 - Inserir\n");
-    printf("2 - Excluir no fim da estrutura\n");
-    printf("3 - Excluir numero especifico na estrutura\n");
-    printf("4 - Listar\n");
-    printf("5 - Listar Tudo\n");
-    printf("6 - Ordenar e listar\n");
-    printf("7 - Ordenar e listar tudo\n");
-    printf("8 - Aumentar tamanho da Estrutura Auxiliar\n");
-    printf("9 - Criar Estrutura Auxiliar\n");
-    scanf("%d", &op);
-    return op;
-}
 
 int main(){
     
     int op;
     int sair = 0;
-    int ret, valor=0, posicao=0, tamanho=0;
+    int ret, valor=0, posicao=0, tamanho=0, novoTamanho=0; 
+    int *estruturaAuxiliar, tamAux;
 
     atribuiNULL();
 
@@ -37,12 +25,13 @@ int main(){
         op = menu();
         switch (op){
             case 0:{
-                liberaMemoria();
+                liberarEspacosEstruturasAuxiliares();
+                free(estruturaAuxiliar);                
                 limpaTela();                
                 sair =1;
                 break;
             }
-            case 1:{
+            case 1:{//inserir numero em estrutura
             	//recebe valor e posicao
             	capturaValor(&valor);
             	capturaPosicao(&posicao);
@@ -76,7 +65,6 @@ int main(){
             	if(ret == SUCESSO){
             		limpaTela();
             		puts("Excluido com sucesso\n");
-                    getDadosEstruturaAuxiliar(posicao);
                 }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
                 	limpaTela();
             		puts("Estrutura auxiliar vazia\n");
@@ -103,7 +91,6 @@ int main(){
             	if(ret == SUCESSO){
             		limpaTela();
             		puts("Excluido com sucesso\n");
-                    getDadosEstruturaAuxiliar(posicao);
                 }else if(ret == NUMERO_INEXISTENTE){
                 	limpaTela();
             		puts("Numero Inexistente\n");
@@ -123,24 +110,29 @@ int main(){
 
             case 4:{ //listar
             	//recebe posicao
-            	capturaPosicao(&posicao);
+            	capturaPosicao(&posicao);                
                 
                 //define retorno
-                ret = getDadosEstruturaAuxiliar(posicao);
+                ret = getDadosEstruturaAuxiliar(posicao, estruturaAuxiliar, &tamAux);
                 
                 if(ret == SUCESSO){
-                    limpaTela();
-                    getDadosEstruturaAuxiliar(posicao);                    
+                    limpaTela();                   
+                    imprimeEstruturaAuxiliar(posicao, estruturaAuxiliar, tamAux);                  
                     
                 }else if(ret == POSICAO_INVALIDA){
                     limpaTela();
-                    printf("Posicao Invalida\n\n", posicao);                                        
+                    printf("Posicao Invalida\n\n");                                        
+                }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
+                    limpaTela();
+                    puts("Estrutura auxiliar vazia\n");
+                }else if(ret == SEM_ESPACO_DE_MEMORIA){
+                    limpaTela();
+                    puts("Sem espaço suficiente na memória\n");
                 }else{
                     limpaTela();
                     printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
                 }
-                    
-                
+
                 break;
             }
             
@@ -149,15 +141,14 @@ int main(){
                 //cria um laço com a função getDadosEstruturaAuxiliar
                 for(posicao=1; posicao<=TAM; posicao++){
                     //define retorno
-                    ret = getDadosEstruturaAuxiliar(posicao);
+                    ret = 1;
                     
                     if(ret == SUCESSO){
-                        //limpaTela();
-                        getDadosEstruturaAuxiliar(posicao);                    
+                        //limpaTela();                  
                         
                     }else if(ret == POSICAO_INVALIDA){
                         //limpaTela();
-                        printf("Posicao Invalida\n\n", posicao);                                        
+                        printf("Posicao Invalida\n\n");                                        
                     }else{
                         //limpaTela();
                         printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
@@ -171,14 +162,14 @@ int main(){
             	//recebe a posicao
             	capturaPosicao(&posicao);
 
-                ret = ordenaVetor(posicao);
+                ret = 1;
 
                 limpaTela();
 
                 if(ret==SUCESSO){
                 	
                 	puts("Ordenado com Sucesso\n");                	
-                	getDadosEstruturaAuxiliar(posicao);
+                	//getDadosEstruturaAuxiliar(posicao);
                 }
 
                 else if(ret==POSICAO_INVALIDA)
@@ -199,13 +190,13 @@ int main(){
 
                 for(posicao=1; posicao <= TAM; posicao++){
                 
-                    ret = ordenaVetor(posicao);
+                    ret = 1;
     
                     if(ret==SUCESSO){
                         
                         puts("Ordenado com Sucesso\n");
                         
-                        getDadosEstruturaAuxiliar(posicao);
+                        //getDadosEstruturaAuxiliar(posicao);
                     }
     
                     else if(ret==POSICAO_INVALIDA)
@@ -219,11 +210,11 @@ int main(){
             }
 
             case 8:{ //Aumentar tamanho da lista
-                //recebe tamanho e posicao da Estrutura Auxiliar
-                capturaTamanho(&tamanho);
+                //recebe tamanho e posicao da Estrutura Auxiliar                
                 capturaPosicao(&posicao);
+                captura_novoTamanho(&novoTamanho);
 
-                ret = modificarTamanhoEstruturaAuxiliar(tamanho, posicao);
+                ret = modificarTamanhoEstruturaAuxiliar(posicao, novoTamanho);
 
                 if(ret == SUCESSO){
                     limpaTela();
@@ -262,7 +253,7 @@ int main(){
                     puts("Quantidade de posicoes menor que 1\n");
                 }else if(ret == SEM_ESPACO_DE_MEMORIA){
                     limpaTela();
-                    puts("O tamanho da Estrutura Auxiliar ultrapassou o maximo permitido\n");
+                    puts("Sem espaço suficiente na memória\n");
                 }else if(ret == JA_TEM_ESTRUTURA_AUXILIAR){
                     limpaTela();
                     printf("A Estrutura auxiliar %d ja existe\n\n", posicao);
@@ -286,4 +277,81 @@ int main(){
     
     return 0;
     
+}
+
+int menu(){
+    int op;
+
+
+    printf("Digite a opção desejada\n");
+    printf("0 - Sair\n");
+    printf("1 - Inserir numero em estrutura\n");
+    printf("2 - Excluir no fim da estrutura\n");
+    printf("3 - Excluir numero especifico na estrutura\n");
+    printf("4 - Listar\n");
+    printf("5 - Listar Tudo\n");
+    printf("6 - Ordenar e listar\n");
+    printf("7 - Ordenar e listar tudo\n");
+    printf("8 - Modificar tamanho da Estrutura Auxiliar\n");
+    printf("9 - Criar Estrutura Auxiliar\n");
+    scanf("%d", &op);
+    return op;
+}
+
+void limpaTela(){
+    system("clear");
+}
+
+void capturaValor(int *valor){
+
+    int n;
+
+    puts("Informe o valor");
+    scanf("%d", &n);
+
+    *valor=n;
+               
+}
+
+void capturaPosicao(int *posicao){
+
+    int n;
+
+    puts("Informe qual a posicao da Estrutura Auxiliar");
+    scanf("%d", &n);
+
+    *posicao=n;
+}
+
+void capturaTamanho(int *tamanho){
+
+    int n;
+
+    puts("Informe a quantidade de posicoes na Estrutura Auxiliar");
+    scanf("%d", &n);
+
+    *tamanho=n;
+}
+
+void captura_novoTamanho(int *novoTamanho){
+
+    int n;
+
+    puts("Informe o numero de posições a ser somado à estrutura auxiliar");
+    scanf("%d", &n);
+
+    *novoTamanho=n;
+}
+
+void imprimeEstruturaAuxiliar(int posicao, int *vetor, int tamanho){
+
+    printf("Estrutura Auxiliar %d:\n", posicao);
+
+   
+    puts("Informacoes armazenadas: \n");
+    for(int i = 0 ; i < tamanho ; i++)
+        printf("Posicao %d: %d\n", i+1, vetor[i]);
+ 
+
+    puts("");
 }
