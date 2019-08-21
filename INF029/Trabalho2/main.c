@@ -16,8 +16,7 @@ int main(){
     
     int op;
     int sair = 0;
-    int ret, valor=0, posicao=0, tamanho=0, novoTamanho=0; 
-    int *estruturaAuxiliar, tamAux;
+    int ret, valor=0, posicao=0, tamanho=0, novoTamanho=0;
 
     atribuiNULL();
 
@@ -26,7 +25,6 @@ int main(){
         switch (op){
             case 0:{
                 liberarEspacosEstruturasAuxiliares();
-                free(estruturaAuxiliar);                
                 limpaTela();                
                 sair =1;
                 break;
@@ -110,28 +108,44 @@ int main(){
 
             case 4:{ //listar
             	//recebe posicao
-            	capturaPosicao(&posicao);                
+            	capturaPosicao(&posicao);  
                 
-                //define retorno
-                ret = getDadosEstruturaAuxiliar(posicao, estruturaAuxiliar, &tamAux);
+                int size = getQuantidadeElementosEstruturaAuxiliar(posicao);
                 
-                if(ret == SUCESSO){
-                    limpaTela();                   
-                    imprimeEstruturaAuxiliar(posicao, estruturaAuxiliar, tamAux);                  
-                    
-                }else if(ret == POSICAO_INVALIDA){
-                    limpaTela();
-                    printf("Posicao Invalida\n\n");                                        
-                }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
+                
+                if(size < 1){
+                    //limpaTela();
+                    printf("Posicao invalida na size: %d\n", posicao);
+                    printf("size: %d\n", size);
+                    printf("getQuantidade: %d\n", getQuantidadeElementosEstruturaAuxiliar(posicao));
+                }else if(size == ESTRUTURA_AUXILIAR_VAZIA){                
                     limpaTela();
                     puts("Estrutura auxiliar vazia\n");
-                }else if(ret == SEM_ESPACO_DE_MEMORIA){
-                    limpaTela();
-                    puts("Sem espaço suficiente na memória\n");
-                }else{
-                    limpaTela();
-                    printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+                }else{                    
+                    int vetAux[size];
+                    //define retorno
+                    ret = getDadosEstruturaAuxiliar(posicao, vetAux);
+                    
+                    if(ret == SUCESSO){
+                        limpaTela();                   
+                        imprimeEstruturaAuxiliar(posicao, vetAux, size);                 
+                        
+                    }else if(ret == POSICAO_INVALIDA){
+                       // limpaTela();
+                        printf("Posicao Invalida: getdados\n\n");                                        
+                    }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
+                        limpaTela();
+                        puts("Estrutura auxiliar vazia\n");
+                    }else if(ret == SEM_ESPACO_DE_MEMORIA){
+                        limpaTela();
+                        puts("Sem espaço suficiente na memória\n");
+                    }else{
+                        limpaTela();
+                        printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+                    }
+                    
                 }
+                
 
                 break;
             }

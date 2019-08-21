@@ -256,8 +256,10 @@ int ehPosicaoValida(int posicao){
    
     if (posicao > 0 && posicao <=10){
         return SUCESSO;
-    }else
+    }else{
+
         return POSICAO_INVALIDA;
+    }
 }
 
 /*
@@ -271,15 +273,16 @@ Retorno (int)
     *ESTRUTURA_AUXILIAR_VAZIA - A estrutura não possui dados a serem listados
     *SEM_ESPACO_DE_MEMORIA - Alocação dinâmica do vetor que armazenará os dados falhou
 */
-int getDadosEstruturaAuxiliar(int posicao, int vetorAux[], int *tamAux){
+int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]){
     
     int retorno = 0;
     
     //testa se a posicao é valida
-    if(ehPosicaoValida(posicao) != SUCESSO)
+    if(ehPosicaoValida(posicao) != SUCESSO){
+       
         retorno = POSICAO_INVALIDA;
    
-    else{
+    }else{
         //testa se existe estrutura auxiliar
         if (vetorPrincipal[posicao-1].vetorAuxiliar == NULL){      
             retorno = SEM_ESTRUTURA_AUXILIAR;
@@ -288,23 +291,11 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[], int *tamAux){
             if(vetorPrincipal[posicao-1].preenchido == 0)
                 retorno = ESTRUTURA_AUXILIAR_VAZIA;
             else{
-                //aloca memória para o vetor auxiliar que armazenará os elementos da Estrutura Auxiliar
-                
-                vetorAux = (int*) malloc(vetorPrincipal[posicao-1].preenchido * sizeof(int));
-                
-                //testa se a alocação ocorreu corretamente
-                if(vetorAux == NULL)
-                    retorno = SEM_ESPACO_DE_MEMORIA;
-                else{
-
-                    for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++){
-                        vetorAux[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i];
-                    }
-
-                    *tamAux = vetorPrincipal[posicao-1].preenchido;
-                    
-                    retorno = SUCESSO;
+                for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++){
+                    vetorAux[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i];
                 }
+                retorno = SUCESSO;
+        
             }
         }
     }
@@ -382,5 +373,34 @@ void shiftEsquerda(int posicao, int posicaoElemento){
 
     for(i = posicaoElemento; i < (vetorPrincipal[posicao-1].tamanho)-1; i++ )
         vetorPrincipal[posicao-1].vetorAuxiliar[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i+1];
+size
+}
+
+/*
+Objetivo: retorna a quantidade de elementos da estrutura auxiliar da posição 'posicao'.
+
+Retorno (int)
+    POSICAO_INVALIDA - posição inválida
+    ESTRUTURA_AUXILIAR_VAZIA - estrutura auxiliar vazia
+    Um número int > 0 correpondente a quantidade de elementos da estrutura
+*/
+int getQuantidadeElementosEstruturaAuxiliar(int posicao){
+
+    int retorno = 0;
+    
+    //testa se a posicao eh valida
+    if(ehPosicaoValida(posicao)==POSICAO_INVALIDA){
+        retorno = POSICAO_INVALIDA;
+    }else{
+        //testa se a posição está vazia
+        if(vetorPrincipal[posicao-1].preenchido < 1)
+            retorno = ESTRUTURA_AUXILIAR_VAZIA;
+        else{
+            //tudo certo, retorne a qtd de preenchidos
+            retorno = vetorPrincipal[posicao-1].preenchido;
+        }
+    }
+
+    return retorno;
 
 }
