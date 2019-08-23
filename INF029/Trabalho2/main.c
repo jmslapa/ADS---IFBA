@@ -18,13 +18,13 @@ int main(){
     int sair = 0;
     int ret, valor=0, posicao=0, tamanho=0, novoTamanho=0;
 
-    atribuiNULL();
+    inicializar();
 
     while (!sair){
         op = menu();
         switch (op){
             case 0:{
-                liberarEspacosEstruturasAuxiliares();
+                finalizar();
                 limpaTela();                
                 sair =1;
                 break;
@@ -113,14 +113,15 @@ int main(){
                 int size = getQuantidadeElementosEstruturaAuxiliar(posicao);
                 
                 
-                if(size < 1){
-                    //limpaTela();
-                    printf("Posicao invalida na size: %d\n", posicao);
-                    printf("size: %d\n", size);
-                    printf("getQuantidade: %d\n", getQuantidadeElementosEstruturaAuxiliar(posicao));
+                if(size == POSICAO_INVALIDA){
+                    limpaTela();
+                    puts("Posicao invalida\n");        
                 }else if(size == ESTRUTURA_AUXILIAR_VAZIA){                
                     limpaTela();
                     puts("Estrutura auxiliar vazia\n");
+                }else if(size == SEM_ESTRUTURA_AUXILIAR){                
+                    limpaTela();
+                    printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
                 }else{                    
                     int vetAux[size];
                     //define retorno
@@ -136,9 +137,6 @@ int main(){
                     }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
                         limpaTela();
                         puts("Estrutura auxiliar vazia\n");
-                    }else if(ret == SEM_ESPACO_DE_MEMORIA){
-                        limpaTela();
-                        puts("Sem espaço suficiente na memória\n");
                     }else{
                         limpaTela();
                         printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
@@ -173,32 +171,47 @@ int main(){
             }
 
             case 6:{ //Ordenar e listar
-            	//recebe a posicao
-            	capturaPosicao(&posicao);
-
-                ret = 1;
-
-                limpaTela();
-
-                if(ret==SUCESSO){
-                	
-                	puts("Ordenado com Sucesso\n");                	
-                	//getDadosEstruturaAuxiliar(posicao);
-                }
-
-                else if(ret==POSICAO_INVALIDA)
-                	puts("Posicao Invalida\n");
+            	//recebe posicao
+            	capturaPosicao(&posicao);  
                 
-                else if(ret == ESTRUTURA_AUXILIAR_VAZIA)
+                int size = getQuantidadeElementosEstruturaAuxiliar(posicao);
+                
+                
+                if(size == POSICAO_INVALIDA){
+                    limpaTela();
+                    puts("Posicao invalida\n");        
+                }else if(size == ESTRUTURA_AUXILIAR_VAZIA){                
+                    limpaTela();
                     puts("Estrutura auxiliar vazia\n");
-
-                else
-                	printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+                }else if(size == SEM_ESTRUTURA_AUXILIAR){                
+                    limpaTela();
+                    printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+                }else{                    
+                    int vetAux[size];
+                    //define retorno
+                    ret = getDadosOrdenadosEstruturaAuxiliar(posicao, vetAux);
+                    
+                    if(ret == SUCESSO){
+                        limpaTela();                   
+                        imprimeEstruturaAuxiliar(posicao, vetAux, size);                       
+                    }else if(ret == POSICAO_INVALIDA){
+                       // limpaTela();
+                        printf("Posicao Invalida: getdados\n\n");                                        
+                    }else if(ret == ESTRUTURA_AUXILIAR_VAZIA){
+                        limpaTela();
+                        puts("Estrutura auxiliar vazia\n");
+                    }else{
+                        limpaTela();
+                        printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
+                    }
+                    
+                }
                 
+
                 break;
             }
 
-            case 7:{ //Ordenar e listar tudo
+            /*case 7:{ //Ordenar e listar tudo
                 
                 limpaTela();                
 
@@ -221,7 +234,7 @@ int main(){
                 }        
                         
                 break;
-            }
+            }*/
 
             case 8:{ //Aumentar tamanho da lista
                 //recebe tamanho e posicao da Estrutura Auxiliar                

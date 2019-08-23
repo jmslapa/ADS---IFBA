@@ -15,13 +15,14 @@
 int criarEstruturaAuxiliar(int tamanho, int posicao);
 int inserirNumeroEmEstrutura(int valor, int posicao);
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]);
-void atribuiNULL();
+void inicializar();
 int ehPosicaoValida(int posicao);
-void liberarEspacosEstruturasAuxiliares();
-int ordenaVetor(int posicao);
+void finalizar();
+int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]);
 int excluirNumeroDoFinaldaEstrutura(int posicao);
 int excluirNumeroEspecificoDeEstrutura(int valor, int posicao);
 int buscaElemento(int elemento, int posicao);
 void shiftEsquerda(int posicao, int posicaoElemento);
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho);
 int getQuantidadeElementosEstruturaAuxiliar(int posicao);
+void insertionSort(int *v, int tam);

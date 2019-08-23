@@ -13,7 +13,7 @@ typedef struct{
 lista vetorPrincipal[TAM];
 
 
-void atribuiNULL(){
+void inicializar(){
 
     int i;
 
@@ -271,7 +271,6 @@ Retorno (int)
     SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
     *ESTRUTURA_AUXILIAR_VAZIA - A estrutura não possui dados a serem listados
-    *SEM_ESPACO_DE_MEMORIA - Alocação dinâmica do vetor que armazenará os dados falhou
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]){
     
@@ -304,7 +303,7 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]){
 
 }
 
-void liberarEspacosEstruturasAuxiliares(){
+void finalizar(){
     for(int i=0; i < TAM; i++){
         
         if(vetorPrincipal[i].vetorAuxiliar!=NULL)
@@ -312,7 +311,17 @@ void liberarEspacosEstruturasAuxiliares(){
     }
 }
 
-int ordenaVetor(int posicao){
+/*
+Objetivo: retorna os números ordenados da estrutura auxiliar da posição 'posicao (1..10)'.
+os números devem ser armazenados em vetorAux
+
+Rertono (int)
+    SUCESSO - recuperado com sucesso os valores da estrutura na posição 'posicao (1..10)'
+    SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
+    POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
+*/
+
+int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]){
 
     int i,j,aux;
 
@@ -320,37 +329,55 @@ int ordenaVetor(int posicao){
     if(ehPosicaoValida(posicao) != SUCESSO)
         return POSICAO_INVALIDA;
     
-    else{
-        
+    else{        
         //testa se a estrutura auxiliar existe
-        if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL){
-            
+        if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL){            
             //testa se a estrutura auxiliar está vazia
-            if(vetorPrincipal[posicao-1].preenchido > 0){
-            
-                for(i=1; i < vetorPrincipal[posicao-1].preenchido; i++){
-
-                    aux=vetorPrincipal[posicao-1].vetorAuxiliar[i];
-
-                    for(j=i-1; (vetorPrincipal[posicao-1].vetorAuxiliar[j])>=0 && (vetorPrincipal[posicao-1].vetorAuxiliar[j])>aux; j--){
-
-                        vetorPrincipal[posicao-1].vetorAuxiliar[j+1]=vetorPrincipal[posicao-1].vetorAuxiliar[j];
-                    }
-
-                    vetorPrincipal[posicao-1].vetorAuxiliar[j+1]=aux;
-                }
-        
+            if(vetorPrincipal[posicao-1].preenchido > 0){               
+                //Preenche vetorAux
+                for(int i = 0; i < vetorPrincipal[posicao-1].preenchido; i++)
+                    vetorAux[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i];
+                //tudo certo, ordena
+                insertionSort(vetorAux, vetorPrincipal[posicao-1].preenchido);
+                //FIM
                 return SUCESSO;
-            }
-            
-            else
+            }else
                 return ESTRUTURA_AUXILIAR_VAZIA;
-        }
-        
-        else
-            return POSICAO_INVALIDA;
+        }else
+            return SEM_ESTRUTURA_AUXILIAR;
         
     }
+}
+
+/*
+Objetivo: retorna os números de todas as estruturas auxiliares.
+os números devem ser armazenados em vetorAux
+
+Rertono (int)
+    SUCESSO - recuperado com sucesso os valores da estrutura na posição 'posicao'
+    
+*/
+int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]){
+
+    int retorno = 0;
+    int i,j,k;
+    
+    for(i = 1; i <= TAM; i++){
+
+        //fazer teste se todas são == NULL
+        if()
+            if(getQuantidadeElementosEstruturaAuxiliar(i) > 0){
+                
+                for(k = 0; k < vetorPrincipal[i-1].preenchido; k++ , j++)
+                    vetorAux[j] = vetorPrincipal[i-1].vetorAuxiliar[k];            
+            }
+            j--;
+    }
+    
+    if(getQuantidadeTotalElementos == 0)
+        return ESTRUTURA_AUXILIAR_VAZIA;
+    else if()
+
 }
 
 int buscaElemento(int elemento, int posicao){
@@ -373,7 +400,6 @@ void shiftEsquerda(int posicao, int posicaoElemento){
 
     for(i = posicaoElemento; i < (vetorPrincipal[posicao-1].tamanho)-1; i++ )
         vetorPrincipal[posicao-1].vetorAuxiliar[i] = vetorPrincipal[posicao-1].vetorAuxiliar[i+1];
-size
 }
 
 /*
@@ -381,6 +407,7 @@ Objetivo: retorna a quantidade de elementos da estrutura auxiliar da posição '
 
 Retorno (int)
     POSICAO_INVALIDA - posição inválida
+    SEM_ESTRUTURA_AUXILIAR - Não tem estrutura auxiliar
     ESTRUTURA_AUXILIAR_VAZIA - estrutura auxiliar vazia
     Um número int > 0 correpondente a quantidade de elementos da estrutura
 */
@@ -392,15 +419,53 @@ int getQuantidadeElementosEstruturaAuxiliar(int posicao){
     if(ehPosicaoValida(posicao)==POSICAO_INVALIDA){
         retorno = POSICAO_INVALIDA;
     }else{
-        //testa se a posição está vazia
-        if(vetorPrincipal[posicao-1].preenchido < 1)
-            retorno = ESTRUTURA_AUXILIAR_VAZIA;
+        //testa se a estrutura auxiliar existe
+        if(vetorPrincipal[posicao-1].vetorAuxiliar == NULL)
+            retorno = SEM_ESTRUTURA_AUXILIAR;
         else{
+            //testa se a posição está vazia
+            if(vetorPrincipal[posicao-1].preenchido < 1)
+                retorno = ESTRUTURA_AUXILIAR_VAZIA;
             //tudo certo, retorne a qtd de preenchidos
-            retorno = vetorPrincipal[posicao-1].preenchido;
+            else
+                retorno = vetorPrincipal[posicao-1].preenchido;
         }
     }
 
     return retorno;
 
+}
+
+/*
+Objetivo: retorna a quantidade total de elementos na estrutura vetorPrincipal
+
+Retorno (int)
+    Sempre retorna algum valor válido, mesmo que 0, pois os testes são realizados na função reutilizada
+*/
+int getQuantidadeTotalElementos(void){
+    
+    int qtdTotal = 0;
+    
+    for(int i = 1; i <= TAM; i++){
+        if(getQuantidadeElementosEstruturaAuxiliar(i) > 0)
+            qtdTotal = qtdTotal + getQuantidadeElementosEstruturaAuxiliar(i);
+    }
+    return qtdTotal;
+}
+
+void insertionSort(int *v, int tam){
+
+	int i, j, aux;
+
+	for(i=1; i<tam; i++){
+
+		aux=v[i];
+
+		for(j=i-1; j>=0 && v[j]>aux; j--){
+
+			v[j+1]=v[j];
+		}
+
+		v[j+1]=aux;
+	}
 }
