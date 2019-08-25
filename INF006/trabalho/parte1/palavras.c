@@ -1,107 +1,176 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<string.h>
 
 #define CONT 10
 
 
-int tamanhoSilaba(void);
-char geraVogal(void);
-char geraConsoante(void);
+char getConsoante(char *vog);
+char getVogal(char *con);
+int buscaString(char *str1[], char *str2, int size);
+void inicializa(char *vetor[]);
 
 
 int main(void){
-
-	char *silaba_1;
-	char *silaba_2;
-	int sizeof_silaba;
-
-
-	for(int i=0; i<CONT; i++){		
-		
+    
+    char consoantes[18] = {'b', 'c', 'd', 'f', 'g', 'h', 'j', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'x', 'z'};
+    char vogais[5] = {'a', 'e', 'i', 'o', 'u'};
+    char *storeWord[CONT];
+    int i = 0, wordLength = 0, z = 0, k = 0 , aux;
+    
+    system("clear");
+    
+    inicializa(storeWord);    
+        
+    
+    for( z = 0 ; z < CONT ; z++ ){
+        
         system("sleep 1");
         
-        srand(i);
-        
-        sizeof_silaba = tamanhoSilaba();       
-        
-		switch(sizeof_silaba){
+        srand(time(NULL));
+        /*
+        while(wordLength < 2){
             
-			case 2:{//silaba com 2 letras
-                silaba_1 = (char*) malloc (sizeof_silaba * sizeof(char));
-                silaba_1[0] = geraConsoante;
-                puts("Consoante foi");
-                silaba_1[1] = geraVogal;
-                puts("Vogal foi");
-                puts(silaba_1);
-                break;    
-			}
-			
-            default:
-                puts("ERROR:");
-		}
-	}
-    
-	return 0;
-}
-
-
-int tamanhoSilaba(void){
-
-	int tam=1;	
-	
-	while(tam<=1){
-		tam = rand()%3;
-	}
-
-	return tam;
-}
-
-char geraVogal(void){
-
-	char vogal=0;
-	int sair=0;
-
-	while(!sair){
-
-		vogal = rand()%123;
+            wordLength = rand()%5;
+        }
+        */
+        
+        wordLength = 2;
+        
+        char word[wordLength+1];
+        
+        storeWord[z] = (char*) malloc( (wordLength+1) * sizeof(char) );
         
         
-		switch(vogal){
-			
-			case 97:
-				sair=1;
-				break;
-			case 101:
-				sair=1;
-				break;
-			case 105:
-				sair=1;
-				break;
-			case 111:
-				sair=1;
-				break;
-			case 117:
-				sair=1;
+        switch(wordLength){
+            
+            case 2:{//palavra com 2 letras
+                
+                for( i = 0 ; i < wordLength ; i+=2 ){
+                    
+                    while(word[i] != 'h' && word[i] != 'j' && word[i] != 'l' && word[i] != 'h' && word[i] != 'p' && word[i] != 'r' && word[i] != 's' && word[i] != 't' && word[i] != 'v')
+                        word[i] = getConsoante(consoantes);
+                    
+                    switch(word[i]){
+                        
+                        case 'h':                        
+                            word[i+1] = 'a';
+                        break;
+                        
+                        case 'j':
+                            word[i+1] = 'a';
+                        break;
+                        
+                        case 'l':
+                            while(word[i+1] != 'a' && word[i+1] != 'e' && word[i+1] != 'i')
+                                word[i+1] = getVogal(vogais);
+                        break;
+                        
+                        case 'n':
+                            while(word[i+1] != 'a' && word[i+1] != 'o' && word[i+1] != 'u')
+                                word[i+1] = getVogal(vogais);
+                        break;
+                        
+                        case 'p':
+                            while(word[i+1] != 'a' && word[i+1] != 'e' && word[i+1] != 'o')
+                                word[i+1] = getVogal(vogais);
+                        break;
+                        
+                        case 'r':
+                            while(word[i+1] != 'e' && word[i+1] != 'i')
+                                word[i+1] = getVogal(vogais);
+                        break;
+                        
+                        case 's':
+                                word[i+1] = 'o';
+                        break;
+                        
+                        case 't':
+                            while(word[i+1] != 'i' && word[i+1] != 'u')
+                                word[i+1] = getVogal(vogais);
+                        break;
+                        
+                        case 'v':
+                            while(word[i+1] != 'a' && word[i+1] != 'i')
+                                word[i+1] = getVogal(vogais);
+                        break;
+                    }                                    
+                            
+                }
+                word[wordLength] = '\0';
+                
+                aux = buscaString(storeWord, word, 2);                
+                
+                if(aux == 0){
+                    strcpy( storeWord[z], word );
+                    puts(storeWord[z]);
+                }else
+                    z--;
+                
                 break;
-            default:
-				sair=0;
-		}		
-	}
-	
-	return vogal;
+            }
+            
+        }
+        
+    }
+    
+    //free(storeWord);
+    
+    return 0;      
 }
 
-char geraConsoante(void){
 
-	char consoante=98;
-	int sair=0;
+char getConsoante(char *con){
+    
+    int i;
+    
+    system("sleep 1");
+    
+    srand(time(NULL));
+    
+    i = rand()%18;
+    
+    return con[i];
+}
 
-	while(consoante > 96 && consoante != 97 && consoante != 101 && consoante != 105 && consoante != 111 && consoante != 117 && consoante != 97-32 && consoante != 101-32 && consoante != 105-32 && consoante != 111-32 && consoante != 117-32){
+char getVogal(char *vog){
+    
+    int i;
+    
+    system("sleep 1");
+    
+    srand(time(NULL));
+    
+    i = rand()%5;
+    
+    return vog[i];
+}
 
-		consoante = rand()%123;
+int buscaString(char *vetorStr[], char *str, int size){
+    
+    int i = 0, j = 0, count = 0;
+    int aux;
+    
+    for( i = 0 ; i < CONT ; i++ ){        
         
-	}
-	
-	return consoante;
+        if(vetorStr[i] == NULL){
+           continue;
+        }else{
+            aux = strcmp(vetorStr[i], str);
+            if(aux == 0)
+                count++;
+        }
+                                
+    }
+    return count;    
+}
+
+void inicializa(char *vetor[]){
+    
+    int i=0;
+    
+    for(i=0; i<CONT; i++){
+        vetor[i] = NULL;
+    }
 }
