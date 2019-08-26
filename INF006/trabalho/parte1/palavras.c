@@ -122,57 +122,156 @@ int duasLetras(int posicao, int wordLength, char word[]){
 
 int tresLetras(int posicao, int wordLength, char word[]){
 
-	int aux, a1, a2, a3, retorno = 0;
-	int combinacaoTipos[wordLength];
+	int retorno = 0;
 
-	while(retorno != SUCESSO){
+	int modoConstrucao = -1;
+	int monossilaba = 0;
+	int dissilaba = 1;
+	int opcoesConstrucao[2] = {monossilaba, dissilaba};
 
-		formaSilabaTresLetras(wordLength, word, combinacaoTipos);
+	modoConstrucao = defineConstrucao(opcoesConstrucao, 2);
+	//modoConstrucao = dissilaba;
+	if(modoConstrucao == dissilaba){
 
-		word[wordLength] = '\0';
+		int aux, a1, a2;
+		int combinacaoTipos[wordLength];
+		
+		char silaba_1;
+		char silaba_2[wordLength-1];
 
-		a1 = combinacaoTipos[0];
-		a2 = combinacaoTipos[1];
-		a3 = combinacaoTipos[2];
-	    
-	    aux = buscaString(storeWord, word, wordLength);		//printf("aux: %d\n", aux);		if(storeWord[posicao]==NULL)	puts("NULL");          
+		while(retorno != SUCESSO){		//puts("dissilaba");
+
+			//define silaba 1
+			silaba_1 = getVogal();
+			//define silaba 2
+			formaSilabaDuasLetras((wordLength-1) , silaba_2, combinacaoTipos);
+			silaba_2[wordLength-1] = '\0';		//printf("silaba 2: %s\n", silaba_2);
+
+			a1 = combinacaoTipos[0];
+			a2 = combinacaoTipos[1];
+			//junta as 2 silabas
+			word[0] = silaba_1;
+			word[1] = '\0';	//puts(word);
+			strcat(word, silaba_2);	//puts(word);
+			word[wordLength] = '\0';
+			//verifica se palavra já existe;
+			aux = buscaString(storeWord, word, wordLength);		//printf("aux: %d\n", aux);		if(storeWord[posicao]==NULL)	puts("NULL");
+
+			//puts("passou a atribuicao do aux");          
 	    	
-	    if(aux == 0){		//puts(word);
+		    if(aux == 0){		//puts(word);
+		    	//puts("entrou no aux==0");
+		    	//printf("a1: %d\n", a1);
+		    	//printf("a2: %d\n", a2);
+		        if(a1 == CONSOANTE && a2 == VOGAL){
+		        	//puts("entrou no C-V");
+		        	if(word[1] != 'q'){
+		        		storeWord[posicao] = (char*) malloc( (wordLength + 1) * sizeof(char) );
+				        strcpy(storeWord[posicao], word);		                    
+				        retorno = SUCESSO;
+				    }else
+				    	retorno = PALAVRA_INVALIDA;
+		    	}else
+		    		retorno PALAVRA_INVALIDA;
+		    }else
+		        retorno = EXISTING_WORD;
 
-	    	if(a1 == CONSOANTE && a2 == VOGAL && a3 == VOGAL){
+		     //printf("retorno: %d\n", retorno);
+		}	
 
-	    		if(word[0] == 'q'){
-	    			if(word[2] == 'e'){
+	}else{
+
+		int aux, a1, a2, a3;
+		int combinacaoTipos[wordLength];
+
+		while(retorno != SUCESSO){
+
+			formaSilabaTresLetras(wordLength, word, combinacaoTipos);
+
+			word[wordLength] = '\0';
+
+			a1 = combinacaoTipos[0];
+			a2 = combinacaoTipos[1];
+			a3 = combinacaoTipos[2];
+		    
+		    aux = buscaString(storeWord, word, wordLength);		//printf("aux: %d\n", aux);		if(storeWord[posicao]==NULL)	puts("NULL");          
+		    	
+		    if(aux == 0){		//puts(word);
+
+		    	if(a1 == CONSOANTE && a2 == VOGAL && a3 == VOGAL){
+
+		    		if(word[0] == 'q'){
+		    			if(word[2] == 'e'){
+			    			storeWord[posicao] = (char*) malloc( (wordLength + 1) * sizeof(char) );
+					        strcpy(storeWord[posicao], word);		                    
+					        retorno = SUCESSO;			        
+					    }else
+					    	retorno = PALAVRA_INVALIDA;			    
+		    		}else if(word[0] != 'g' && word[0] != 'h' && word[0] != 'j' && word[0] != 'x' && word[0] != 'z'){
 		    			storeWord[posicao] = (char*) malloc( (wordLength + 1) * sizeof(char) );
 				        strcpy(storeWord[posicao], word);		                    
-				        retorno = SUCESSO;			        
+				        retorno = SUCESSO;
+		    		}
+		    		else
+		    			retorno = PALAVRA_INVALIDA;
+		    	}else if(a1 == CONSOANTE && a2 == VOGAL && a3 == CONSOANTE){
+
+		    		if(word[0] != 'h' && word[0] != 'j' && word[0] != 'r' && word[0] != 'c' && word[0] != 'x' && word[0] != 'z'){
+		    			
+		    			if(word[2] != 'b' && word[2] != 'c' && word[2] != 'd' && word[2] != 'f' && word[2] != 'g' && word[2] != 'h' && word[2] != 'j' && word[2] != 'n' && word[2] != 'p' && word[2] != 't' && word[2] != 'v'){
+			    			
+			    			storeWord[posicao] = (char*) malloc( (wordLength + 1) * sizeof(char) );
+					        strcpy(storeWord[posicao], word);		                    
+					        retorno = SUCESSO;
+				    	}
 				    }else
-				    	retorno = PALAVRA_INVALIDA;			    
-	    		}else if(word[0] != 'g' && word[0] != 'h' && word[0] != 'j' && word[0] != 'x' && word[0] != 'z'){
-	    			storeWord[posicao] = (char*) malloc( (wordLength + 1) * sizeof(char) );
-			        strcpy(storeWord[posicao], word);		                    
-			        retorno = SUCESSO;
-	    		}
-	    		else
-	    			retorno = PALAVRA_INVALIDA;
-	    	}else if(a1 == CONSOANTE && a2 == VOGAL && a3 == CONSOANTE){
-
-	    		if(word[0] != 'h' && word[0] != 'j' && word[0] != 'r' && word[0] != 'c' && word[0] != 'x' && word[0] != 'z'){
-	    			storeWord[posicao] = (char*) malloc( (wordLength + 1) * sizeof(char) );
-			        strcpy(storeWord[posicao], word);		                    
-			        retorno = SUCESSO;
-	    		}else
-	    			retorno = PALAVRA_INVALIDA;
-	    	}else
-	    		retorno = PALAVRA_INVALIDA;
-
-
-	   
-	    }else
-	        retorno = EXISTING_WORD;
-    }
+		    			retorno = PALAVRA_INVALIDA;
+		    	}else
+		    		retorno = PALAVRA_INVALIDA;		   
+		    }else
+		    	retorno = EXISTING_WORD;
+	    }
+	}
 
     return retorno;
+}
+
+void formaSilabaDuasLetras(int size, char silaba[], int combinacaoTipos[]){
+
+	int a1, a2, sair, aux;
+
+	srand(time(NULL));
+
+	sair = 0;
+
+	while(!sair){
+
+		composicaoSilaba(size, silaba);
+
+		a1 = silaba[0];
+		a2 = silaba[1];
+
+		//printf("silaba_2[0]: %d\n", a1);
+		//printf("silaba_2[1]: %d\n", a2);
+
+		if(a1 == CONSOANTE && a2 == VOGAL){
+
+			silaba[0] = getConsoante();
+			silaba[1] = getVogal();
+
+			sair = 1;
+
+		}else if(a1 == VOGAL && a2 == CONSOANTE){
+
+			silaba[0] = getVogal();
+			silaba[1] = getConsoante();
+
+		}else
+			continue;
+	}
+
+	combinacaoTipos[0] = a1;
+	combinacaoTipos[1] = a2; 
 }
 
 void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
@@ -322,6 +421,19 @@ int sorteiaTipo(){
 
     return  tipo;
 
+}
+
+int defineConstrucao(int opcoes[], int size){
+
+	int i, modoConstrucao;
+
+	srand(time(NULL));
+
+	i = rand()%size;
+
+	modoConstrucao = opcoes[i];
+
+	return modoConstrucao;
 }
 
 void composicaoSilaba(int size, char silaba[]){
