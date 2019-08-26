@@ -5,10 +5,11 @@
 #include "palavras.h"
 
 void limpaTela();
+int tamanhoPalavra();
 
 int main(void){
     
-    int posicao = 0, wordLength, retorno;
+    int posicao = 0, wordLength = 0, retorno;
     
     limpaTela();
     
@@ -16,21 +17,12 @@ int main(void){
         
     
     for( posicao = 0 ; posicao < CONT ; posicao++ ){
-        
-        pause();
-        
-        srand(time(NULL));
 
-        /*
-        while(wordLength < 2){
-            
-            wordLength = rand()%5;
-        }
-        */
+        wordLength = tamanhoPalavra();
         
-        wordLength = 2;
-        
-        char word[wordLength+1];       
+        char word[wordLength+1];
+
+        //printf("wordLength: %d\n", wordLength);       
         
         switch(wordLength){
             
@@ -45,6 +37,19 @@ int main(void){
 
                 break;
             }
+
+            case 3:{//palavra com 3 letras 
+
+                    retorno = tresLetras(posicao, wordLength, word);        //printf("retorno: %d\n", retorno);
+
+                    if(retorno != SUCESSO)
+                        posicao--;
+                    else
+                        puts(word);                        
+
+                break;
+            }
+
             
         }
         
@@ -53,6 +58,22 @@ int main(void){
     finaliza();
 
     return 0;      
+}
+
+int tamanhoPalavra(){
+
+    int size = 0;
+
+    while(size < 2){
+
+        srand(time(NULL));
+    
+        pause();
+    
+        size = rand()%4;
+    }
+
+    return size;
 }
 
 void limpaTela(){
