@@ -10,6 +10,7 @@ void capturaValor(int *valor);
 void capturaTamanho(int *tamanho);
 void captura_novoTamanho(int *novoTamanho);
 void imprimeEstruturaAuxiliar(int posicao, int *vetor, int tamanho);
+void imprimeEstruturaPrincipal(int *vetor, int tamanho);
 
 
 int main(){
@@ -18,12 +19,15 @@ int main(){
     int sair = 0;
     int ret, valor=0, posicao=0, tamanho=0, novoTamanho=0;
 
+    No *inicio = NULL;
+
     inicializar();
 
     while (!sair){
         op = menu();
         switch (op){
             case 0:{
+                destruirListaEncadeadaComCabecote(inicio);
                 finalizar();
                 limpaTela();                
                 sair =1;
@@ -148,24 +152,25 @@ int main(){
                 break;
             }
             
-            case 5:{ //listar tudo                        
+            case 5:{ //listar tudo                         
                 
-                //cria um laço com a função getDadosEstruturaAuxiliar
-                for(posicao=1; posicao<=TAM; posicao++){
-                    //define retorno
-                    ret = 1;
+                int size = getQuantidadeTotalElementos();
+                
+                
+                                   
+                int vetAux[size];
+                //define retorno
+                ret = getDadosDeTodasEstruturasAuxiliares(vetAux);
+                
+                if(ret == SUCESSO){
+                    limpaTela();                   
+                    imprimeEstruturaPrincipal(vetAux, size);                 
                     
-                    if(ret == SUCESSO){
-                        //limpaTela();                  
-                        
-                    }else if(ret == POSICAO_INVALIDA){
-                        //limpaTela();
-                        printf("Posicao Invalida\n\n");                                        
-                    }else{
-                        //limpaTela();
-                        printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
-                    }
+                }else{
+                    limpaTela();
+                    printf("Nenhuma informação armazenada\n\n");
                 }
+                    
 
                 break;
             }
@@ -211,30 +216,28 @@ int main(){
                 break;
             }
 
-            /*case 7:{ //Ordenar e listar tudo
+            case 7:{ //Ordenar e listar tudo
                 
-                limpaTela();                
+               int size = getQuantidadeTotalElementos();
+                
+                
+                                   
+                int vetAux[size];
+                //define retorno
+                ret = getDadosOrdenadosDeTodasEstruturasAuxiliares(vetAux);
+                
+                if(ret == SUCESSO){
+                    limpaTela();                   
+                    imprimeEstruturaPrincipal(vetAux, size);                 
+                    
+                }else{
+                    limpaTela();
+                    printf("Nenhuma informação armazenada\n\n");
+                }
+                    
 
-                for(posicao=1; posicao <= TAM; posicao++){
-                
-                    ret = 1;
-    
-                    if(ret==SUCESSO){
-                        
-                        puts("Ordenado com Sucesso\n");
-                        
-                        //getDadosEstruturaAuxiliar(posicao);
-                    }
-    
-                    else if(ret==POSICAO_INVALIDA)
-                        puts("Posicao Invalida\n");
-    
-                    else
-                        printf("Estrutura auxiliar %d nao implementada\n\n", posicao);
-                }        
-                        
                 break;
-            }*/
+            }
 
             case 8:{ //Aumentar tamanho da lista
                 //recebe tamanho e posicao da Estrutura Auxiliar                
@@ -270,8 +273,6 @@ int main(){
 
                 ret = criarEstruturaAuxiliar(tamanho, posicao);
 
-                printf("ret: %d\n", ret);
-
                 if(ret == SUCESSO){
                     limpaTela();
                     puts("Criado com sucesso\n");
@@ -288,6 +289,39 @@ int main(){
                     limpaTela();
                     puts("Posicao invalida\n");
                 }
+                break;
+            }
+
+            case 10:{//Criar Lista Encadeada
+
+                inicio = montarListaEncadeadaComCabecote();
+
+                if(inicio == NULL){
+                    limpaTela();
+                    puts("Nenhuma informação armazenada\n");
+                }else{
+                    limpaTela();                    
+                    puts("Criado com sucesso\n");
+                }
+                break;
+            }
+
+            case 11:{//EXIBIR LISTA ENCADEADA
+
+                int size = getQuantidadeTotalElementos();              
+                
+                                   
+                int vetAux[size];
+                //define retorno
+                if(inicio != NULL){
+                    getDadosListaEncadeadaComCabecote(inicio, vetAux);
+                    limpaTela();                
+                    imprimeEstruturaPrincipal(vetAux, size);
+                }else{
+                    limpaTela();
+                    puts("Lista Encadeada nao existente\n");
+                }                    
+
                 break;
             }
 
@@ -321,6 +355,8 @@ int menu(){
     printf("7 - Ordenar e listar tudo\n");
     printf("8 - Modificar tamanho da Estrutura Auxiliar\n");
     printf("9 - Criar Estrutura Auxiliar\n");
+    printf("10 - Criar Lista Encadeada\n");
+    printf("11 - Exibir Lista Encadeada\n");
     scanf("%d", &op);
     return op;
 }
@@ -377,8 +413,16 @@ void imprimeEstruturaAuxiliar(int posicao, int *vetor, int tamanho){
    
     puts("Informacoes armazenadas: \n");
     for(int i = 0 ; i < tamanho ; i++)
-        printf("Posicao %d: %d\n", i+1, vetor[i]);
- 
+        printf("Posicao %d: %d\n", i+1, vetor[i]); 
+
+    puts("");
+}
+
+void imprimeEstruturaPrincipal(int *vetor, int tamanho){
+
+    puts("Informacoes armazenadas: \n");
+    for(int i = 0 ; i < tamanho ; i++)
+        printf("Posicao %d: %d\n", i+1, vetor[i]); 
 
     puts("");
 }

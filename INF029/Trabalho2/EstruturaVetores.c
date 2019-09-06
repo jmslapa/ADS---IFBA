@@ -4,6 +4,7 @@
 
 #include "EstruturaVetores.h"
 
+//definindo estrutura principal
 typedef struct{
     int tamanho;
     int preenchido;
@@ -39,15 +40,15 @@ Rertono (int)
 int criarEstruturaAuxiliar(int tamanho, int posicao){
     
     int retorno = 0;
-    //testar se existe a estrutura auxiliar
-    
-    if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL)
-        retorno = JA_TEM_ESTRUTURA_AUXILIAR;
+
+    //testar se posição é um valor válido {entre 1 e 10}
+    if (ehPosicaoValida(posicao)==POSICAO_INVALIDA)
+        retorno = POSICAO_INVALIDA;
    
     else{
-        //testar se posição é um valor válido {entre 1 e 10}
-        if (ehPosicaoValida(posicao)==POSICAO_INVALIDA)
-            retorno = POSICAO_INVALIDA;
+        //testar se existe a estrutura auxiliar    
+        if(vetorPrincipal[posicao-1].vetorAuxiliar != NULL)
+        retorno = JA_TEM_ESTRUTURA_AUXILIAR;
     
         else{
             //testar se o tamanho não é menor que 1
@@ -352,31 +353,73 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]){
 /*
 Objetivo: retorna os números de todas as estruturas auxiliares.
 os números devem ser armazenados em vetorAux
-
 Rertono (int)
     SUCESSO - recuperado com sucesso os valores da estrutura na posição 'posicao'
-    
+    TODAS_ESTRUTURAS_AUXILIARES_VAZIAS - nao tem nenhum valor
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]){
 
-    int retorno = 0;
-    int i,j,k;
-    
-    for(i = 1; i <= TAM; i++){
+    int i, j, k, count = 0;
 
-        //fazer teste se todas são == NULL
-        if()
-            if(getQuantidadeElementosEstruturaAuxiliar(i) > 0){
-                
-                for(k = 0; k < vetorPrincipal[i-1].preenchido; k++ , j++)
-                    vetorAux[j] = vetorPrincipal[i-1].vetorAuxiliar[k];            
-            }
-            j--;
-    }
     
-    if(getQuantidadeTotalElementos == 0)
-        return ESTRUTURA_AUXILIAR_VAZIA;
-    else if()
+    k = 0;
+
+    for(i = 0 ; i < TAM ; i++){
+        //testa se a estrutura auxiliar está vazia
+        if(vetorPrincipal[i].preenchido > 0){
+            //se nao está vazia, atribui os valores ao vetor auxiliar
+            for(j = 0 ; j < vetorPrincipal[i].preenchido ; j++){
+                vetorAux[k] = vetorPrincipal[i].vetorAuxiliar[j];
+                k++;
+            }
+        //se está vazia, incrementa o contador
+        }else
+            count++;
+    }
+
+    //testa se todas as estruturas auxiliares estão vazias      
+    if(count == 10)
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else
+        return SUCESSO;
+
+}
+
+/*
+Objetivo: retorna os números ordenados de todas as estruturas auxiliares.
+os números devem ser armazenados em vetorAux
+Rertono (int)
+    SUCESSO - recuperado com sucesso os valores da estrutura na posição 'posicao'
+    TODAS_ESTRUTURAS_AUXILIARES_VAZIAS - nao tem nenhum valor
+*/
+int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]){
+
+     int i, j, k, count = 0;
+
+    
+    k = 0;
+
+    for(i = 0 ; i < TAM ; i++){
+        //testa se a estrutura auxiliar está vazia
+        if(vetorPrincipal[i].preenchido > 0){
+            //se nao está vazia, atribui os valores ao vetor auxiliar
+            for(j = 0 ; j < vetorPrincipal[i].preenchido ; j++){
+                vetorAux[k] = vetorPrincipal[i].vetorAuxiliar[j];
+                k++;
+            }
+        //se está vazia, incrementa o contador
+        }else
+            count++;
+    }
+
+    //testa se todas as estruturas auxiliares estão vazias      
+    if(count == 10)
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+    else{
+
+        insertionSort(vetorAux, getQuantidadeTotalElementos());
+        return SUCESSO;
+    }
 
 }
 
@@ -468,4 +511,99 @@ void insertionSort(int *v, int tam){
 
 		v[j+1]=aux;
 	}
+}
+
+/*
+Objetivo: montar a lista encadeada com cabeçote com todos os números presentes em todas as estruturas.
+Retorno (No*)
+    NULL, caso não tenha nenhum número nas listas
+    No*, ponteiro para o início da lista com cabeçote
+*/
+No* montarListaEncadeadaComCabecote(){
+
+    No *inicio = (No*) malloc(sizeof(No));
+
+    inicio->prox == NULL;
+
+    int qtdTotalElementos = getQuantidadeTotalElementos();
+    int vetorAux[qtdTotalElementos];
+    int ret = 0;
+
+    ret = getDadosDeTodasEstruturasAuxiliares(vetorAux);
+
+    if(ret == SUCESSO)
+        for(int i = 0 ; i < qtdTotalElementos ; i++)
+            inserirFimListaEncadeada(inicio, vetorAux[i]);
+    else
+        return NULL;
+
+    return inicio;
+
+}
+
+/*
+Objetivo: retorna os números da lista enceada com cabeçote armazenando em vetorAux.
+Retorno void
+*/
+void getDadosListaEncadeadaComCabecote(No* inicio, int vetorAux[]){
+
+    No *atual;
+    int i;
+
+    if(inicio != NULL)
+        for(i = 0 , atual = inicio->prox ; atual != NULL ; atual = atual->prox , i++)
+            vetorAux[i] = atual->conteudo; 
+
+}
+
+/*
+Objetivo: Destruir a lista encadeada com cabeçote a partir de início.
+Retorno 
+    void.
+*/
+void destruirListaEncadeadaComCabecote(No* inicio){
+   
+   No *atual = inicio;
+   No *tmp;
+
+   while(atual != NULL){
+
+        tmp = atual->prox;
+        free(atual);
+        atual = tmp;
+   }
+
+}
+
+No* criarElementoEncadeado(int valor){
+
+    No *novo = (No*) malloc(sizeof(No));
+
+    if(novo == NULL)
+        return NULL;
+
+    novo->conteudo = valor;
+
+    novo->prox = NULL;
+
+    return novo;
+}
+
+void inserirFimListaEncadeada(No *inicio, int valor){
+
+    No *tmp;
+    No *novo = criarElementoEncadeado(valor);
+
+    if(inicio->prox  == NULL)
+        inicio->prox = novo;
+    else{
+
+        tmp = inicio->prox;
+
+        while(tmp->prox != NULL)
+            tmp = tmp->prox;
+
+        tmp->prox = novo;
+
+    }
 }
