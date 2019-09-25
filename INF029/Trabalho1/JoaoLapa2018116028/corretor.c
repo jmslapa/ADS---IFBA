@@ -30,13 +30,13 @@ void testQ5();
 void testQ6();
 
 int main(){
-    testSomar();
+    /*testSomar();
     testFatorial();
     testQ1();
     testQ2();
     testQ3();
     testQ4();
-    testQ5();
+    testQ5();*/
     testQ6();
 }
 
@@ -170,10 +170,23 @@ void testQ5(){
     printf("%d\n",q5(5430) == 345);
 }
 
-void testQ6(){
+/*void testQ6(){
     printf("%d\n",q6(34567368, 3) == 2);
     printf("%d\n",q6(34567368, 4576) == 0);
     printf("%d\n",q6(3539343, 3) == 4);
     printf("%d\n",q6(3539343, 39) == 1);
 
+}*/
+void testQ6(){
+    printf("%d\n", q6(34567368, 3) == 2);
+    printf("%d\n", q6(34567368, 4576) == 0);
+    printf("%d\n", q6(3539343, 3) == 4);
+    printf("%d\n", q6(3539343, 39) == 1);
+    printf("%d\n", q6(5444, 44) == 1);
+    printf("%d\n", q6(54444, 44) == 2);
+    printf("%d\n", q6(1234562354, 23) == 2);
+    printf("%d\n", q6(1234, 13) == 0);
+    printf("%d\n", q6(544444, 4) == 5);
+    printf("%d\n", q6(1234562354, 32) == 0);
+    
 }
