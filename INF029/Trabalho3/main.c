@@ -276,7 +276,7 @@ int main(){
                 if(ret == SUCESSO){
                     limpaTela();
                     puts("Criado com sucesso\n");
-                }else if(ret == NOVO_TAMANHO_INVALIDO){
+                }else if(ret == POSICAO_INVALIDA){
                     limpaTela();
                     puts("Quantidade de posicoes menor que 1\n");
                 }else if(ret == SEM_ESPACO_DE_MEMORIA){

@@ -13,9 +13,6 @@ typedef struct{
 
 lista vetorPrincipal[TAM];
 
-FILE *arq;
-
-
 void inicializar(){
 
     int i;
@@ -26,6 +23,8 @@ void inicializar(){
             vetorPrincipal[i].tamanho = 0;
             vetorPrincipal[i].preenchido = 0;
     }
+    
+    carregarDados();
 }
 
 /*
@@ -307,6 +306,9 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]){
 }
 
 void finalizar(){
+    
+    gravarDados();
+    
     for(int i=0; i < TAM; i++){
         
         if(vetorPrincipal[i].vetorAuxiliar!=NULL)
@@ -609,15 +611,295 @@ void inserirFimListaEncadeada(No *inicio, int valor){
 
     }
 }
+/*
+Objetivo da funcao eh recuperar os dados contidos na estrutura principal e gravá-los
+em um arquivo .txt ou .bin mediante o arquivo config.txt
 
-int gravarDados_txt(FILE *arq){
+- CONFIG_NAO_ENCONTRADO: arquivo config.txt não encontrado no diretório do executável
+- CONFIG_INVALIDO: config.txt preenchido com qualquer informação diferente de 1 ou 2
+- ERRO_ABERTURA_ARQUIVO: erro ao abrir/criar arquivo para escrita dos dados
+- ERRO_ESCRITA_BIN: erro na funçao fwrite()    
+*/
+int gravarDados(){
     
+    FILE *arq;
     int i;
+    int config = configMode();
     
-    arq = ("data.txt", "w");
+    //testa se o arquivo config existe e está configurado corretamente;
+    if(config == CONFIG_NAO_ENCONTRADO)
+        return CONFIG_NAO_ENCONTRADO;
     
-    for(i = 0 ; )
+    else if(config == CONFIG_INVALIDO)        
+        return CONFIG_INVALIDO;
     
+    else{
+        
+        if(config == 1)
+            arq = fopen("data.txt", "w"); //cria arquivo de texto
+        else
+            arq = fopen("data.bin", "wb"); //cria arquivo binario
+    }   
+    
+    if(arq == NULL)
+        return ERRO_ABERTURA_ARQUIVO;
+    
+    else{
+        
+        if(config == 1){ //escreve em texto
+            
+            for(i = 0 ; i < TAM ; i++){
+                
+                //verifica se a estrutura auxiliar existe
+                if(vetorPrincipal[i].vetorAuxiliar == NULL){ //caso nao exista, escreve '0'
+                    fprintf(arq, "%d", 0);
+                    fprintf(arq, "%c", '\n');
+                }
+                else{ //caso exista:
+                    
+                    //escreve o tamanho da estrutura
+                    fprintf(arq, "%d ", vetorPrincipal[i].tamanho);
+                    
+                    //verifica se a estrutura está vazia
+                    if(vetorPrincipal[i].preenchido == 0){ //caso esteja vazia, escreve '0'
+                        fprintf(arq, "%d", 0);
+                        fprintf(arq, "%c", '\n');
+                    }
+                    else{ //caso esteja preenchida:                
+                        
+                        //cria vetor auxiliar
+                        int vetAux[vetorPrincipal[i].preenchido];
+                        
+                        //escreve a quantidade de elementos na estrutura
+                        fprintf(arq, "%d ", vetorPrincipal[i].preenchido);
+                        
+                        //recupera o conteúdo da estrutura
+                        getDadosEstruturaAuxiliar(i+1, vetAux);
+                        
+                        //escreve o conteúdo do vetor auxiliar
+                        escreveVetor(arq, vetAux, vetorPrincipal[i].preenchido);
+                        fprintf(arq, "%c", '\n');
+                    }
+                }
+            }
+        }
+        else{ //escreve em binario
+        
+            int n;
+            
+            for(i = 0 ; i < TAM ; i++){
+                
+                //verifica se a estrutura auxiliar existe
+                if(vetorPrincipal[i].vetorAuxiliar == NULL){ //caso nao exista, escreve '0'
+                    n = 0;
+                    if(fwrite(&n, sizeof(n), 1, arq) != 1)
+                        return ERRO_ESCRITA_BIN;
+                }
+                else{ //caso exista:
+                    
+                    //escreve o tamanho da estrutura
+                    n = vetorPrincipal[i].tamanho;
+                    if(fwrite(&n, sizeof(n), 1, arq) != 1)
+                        return ERRO_ESCRITA_BIN;
+                    
+                    //verifica se a estrutura está vazia
+                    if(vetorPrincipal[i].preenchido == 0){ //caso esteja vazia, escreve '0'
+                        n = 0;
+                        if(fwrite(&n, sizeof(n), 1, arq) != 1)
+                            return ERRO_ESCRITA_BIN;
+                    }
+                    else{ //caso esteja preenchida:                
+                        
+                        //cria vetor auxiliar
+                        int vetAux[vetorPrincipal[i].preenchido];
+                        int n;
+                        
+                        //escreve a quantidade de elementos na estrutura
+                        n = vetorPrincipal[i].preenchido;
+                        if(fwrite(&n, sizeof(n), 1, arq) != 1)
+                            return ERRO_ESCRITA_BIN;                            
+                        
+                        //recupera o conteúdo da estrutura
+                        getDadosEstruturaAuxiliar(i+1, vetAux);
+                        
+                        //escreve o conteúdo do vetor auxiliar                                     
+                        if(fwrite(&vetAux[0], sizeof(vetAux), 1, arq) != 1)
+                            return ERRO_ESCRITA_BIN;
+                    }
+                }
+            }            
+        }         
+    }
+    
+    fclose(arq);
+    return SUCESSO;
+}
+
+int carregarDados(){
+    
+    FILE *arq;
+    int i, j, k, l, index;
+    int config = configMode();
+    
+    //testa se o arquivo config existe e está configurado corretamente;
+    if(config == CONFIG_NAO_ENCONTRADO)
+        return CONFIG_NAO_ENCONTRADO;
+    
+    else if(config == CONFIG_INVALIDO)        
+        return CONFIG_INVALIDO;
+    
+    else{
+        
+        if(config == 1)
+            arq = fopen("data.txt", "r");
+        else
+            arq = fopen("data.bin", "rb");
+    }   
+    
+    if(arq == NULL)
+        return ERRO_ABERTURA_ARQUIVO;
+    
+    else{
+        
+        if(config == 1){ //lê arquivo em texto
+            
+            //define o tamanho máximo que uma string que representa o tamanho da estrutura auxiliar pode ter
+            for(index = 1, l = 1 ; TAM/index != 0 ; l++)
+                index *= 10;
+            
+            //define variaveis locais
+            char tamanho[l];
+            char preenchido[l];
+            char elemento[8];
+            int n, m;
+            int ret;
+            char c;
+            char a[1];
+            
+            //inicia a leitura
+            for(i = 0 ; i < TAM ; i++){
+                
+                //verifica se a estrutura auxiliar existe
+                for(c = fgetc(arq), j = 0 ; c != ' ' && c != '\n' && c != EOF ; c = fgetc(arq), j++)
+                    tamanho[j] = c;
+
+                tamanho[j] = '\0';
+                n = atoi(tamanho);
+                
+                if(n != 0){ //se a estrutura existir
+                    
+                    //cria a estrutura auxiliar
+                    ret = criarEstruturaAuxiliar(n, i+1);
+                    
+                    if(ret != SUCESSO)
+                        return ret;
+                    
+                    else{ //estrutura criada com sucesso
+                        
+                                                
+                        //verifica se a estrutura auxiliar está vazia
+                        for(c = fgetc(arq), j = 0 ; c != ' ' && c != '\n' && c != EOF ; c = fgetc(arq), j++)
+                            preenchido[j] = c;
+                    
+                        preenchido[j] = '\0';
+                        n = atoi(preenchido);
+                        
+                        if(n != 0){ //se a estrutura não estiver vazia
+                                                    
+                            //lê os elementos da estrutura auxiliar e os atribui
+                            for(k = 0 ; k < n ; k++){
+                                
+                                for(c = fgetc(arq), j = 0 ; c != ' ' && c != '\n' && c != EOF ; c = fgetc(arq), j++)
+                                    elemento[j] = c;
+                                
+                                elemento[j] = '\0';
+                                m = atoi(elemento);
+                                                                
+                                //atribui o elemento da estrutura auxiliar
+                                ret = inserirNumeroEmEstrutura(m, i+1);
+                                if(ret != SUCESSO)
+                                    return ret;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else{//lê arquivo em binario
+            
+            //variaveis locais
+            int n, m;
+            int ret;
+            
+            //inicia leitura
+            for(i = 0 ; i < TAM ; i++){
+                
+                //verifica se a estrutura existe
+                fread(&n, sizeof(n), 1, arq);
+                
+                if(n != 0){//se a estrutura existir
+                    
+                    //cria a estrutura auxiliar
+                    ret = criarEstruturaAuxiliar(n, i+1);
+                    
+                    if(ret != SUCESSO)
+                        return ret;
+                    
+                    //verfica se a estrutura está vazia
+                    fread(&n, sizeof(n), 1, arq);
+                    
+                    if(n != 0){//se a estrutura não estiver vazia
+                        
+                        //atribui elementos da estrutura auxiliar
+                        for(j = 0 ; j < n ; j++){
+                            
+                            fread(&m, sizeof(m), 1, arq);
+                            ret = inserirNumeroEmEstrutura(m, i+1);
+                            if(ret != SUCESSO)
+                                return ret;
+                        }
+                    }                                            
+                }
+            }            
+        }
+    }
+    
+    fclose(arq);
+    return SUCESSO;
+}
+
+void escreveVetor(FILE *arq, int *vet, int size){
+    
+    int i = 0;
+    
+    fprintf(arq, "%d", vet[i]);
+    
+    for(i = 1 ; i < size ; i++)
+        fprintf(arq, " %d", vet[i]);
+}
+
+
+int configMode(){
+    
+    FILE *conf;
+    char c[2];
+    int n;
+    
+    conf = fopen("config.txt", "r");
+    
+    if(conf == NULL)
+        return CONFIG_NAO_ENCONTRADO;
+    else{
+        
+        c[0] = fgetc(conf);
+        c[1] = '\0';
+        n = atoi(c);
+        
+        if(n > 0 && n < 3)
+            return n;
+        else
+            return CONFIG_INVALIDO;
+    }
 }
 
 
