@@ -294,7 +294,7 @@ int main(){
 
             case 10:{//Criar Lista Encadeada
 
-                inicio = montarListaEncadeadaComCabecote();
+                inicio = montarListaEncadeadaComCabecote(inicio);
 
                 if(inicio == NULL){
                     limpaTela();
@@ -308,7 +308,7 @@ int main(){
 
             case 11:{//EXIBIR LISTA ENCADEADA
 
-                int size = getQuantidadeTotalElementos();              
+                int size = sizeListaEncadeada(inicio);              
                 
                                    
                 int vetAux[size];

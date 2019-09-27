@@ -523,11 +523,14 @@ Retorno (No*)
     NULL, caso não tenha nenhum número nas listas
     No*, ponteiro para o início da lista com cabeçote
 */
-No* montarListaEncadeadaComCabecote(){
+No* montarListaEncadeadaComCabecote(No* inicio){
 
-    No *inicio = (No*) malloc(sizeof(No));
+    //destroi lista atual
+    destruirListaEncadeadaComCabecote(inicio);    
+    //cria nova lista
+    inicio = (No*) malloc(sizeof(No));
 
-    inicio->prox == NULL;
+    inicio->prox = NULL;
 
     int qtdTotalElementos = getQuantidadeTotalElementos();
     int vetorAux[qtdTotalElementos];
@@ -610,6 +613,23 @@ void inserirFimListaEncadeada(No *inicio, int valor){
         tmp->prox = novo;
 
     }
+}
+int sizeListaEncadeada(No* inicio){
+    
+    No* atual;
+    int count = 0;
+    
+    if(inicio != NULL){    
+        
+        atual = inicio->prox;
+        
+        while(atual != NULL){
+            atual = atual->prox;
+            count++;
+        }
+    }
+    
+    return count;
 }
 /*
 Objetivo da funcao eh recuperar os dados contidos na estrutura principal e gravá-los
@@ -901,8 +921,3 @@ int configMode(){
             return CONFIG_INVALIDO;
     }
 }
-
-
-
-
-

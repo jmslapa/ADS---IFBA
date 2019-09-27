@@ -54,10 +54,11 @@ int buscaElemento(int elemento, int posicao);
 int configMode();
 
 //funções de lista encadeada
-No* montarListaEncadeadaComCabecote();
+No* montarListaEncadeadaComCabecote(No* inicio);
 void getDadosListaEncadeadaComCabecote(No* inicio, int vetorAux[]);
 void destruirListaEncadeadaComCabecote(No* inicio);
 
 //funcções secundárias de lista encadeada
 No* criarElementoEncadeado(int valor);
 void inserirFimListaEncadeada(No *inicio, int valor);
+int sizeListaEncadeada(No* inicio);
