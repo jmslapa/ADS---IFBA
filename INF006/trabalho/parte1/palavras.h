@@ -10,8 +10,9 @@ void inicializa();
 void finaliza();
 void pause();
 void composicaoSilaba(int size, char silaba[]);
-void formaSilabaDuasLetras(int size, char silaba[], int combinacaoTipos[]);
-void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]);
+void formaSilabaDuasLetras(char silaba[], int combinacaoTipos[]);
+void formaSilabaTresLetras(char silaba[], int combinacaoTipos[]);
+void formaSilabaQuatroLetras(char silaba[], int combinacaoTipos[]);
 
 char getConsoante();
 char getVogal();

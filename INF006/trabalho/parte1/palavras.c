@@ -130,22 +130,22 @@ int tresLetras(int posicao, int wordLength, char word[]){
 	int opcoesConstrucao[2] = {monossilaba, dissilaba};
 
 	modoConstrucao = defineConstrucao(opcoesConstrucao, 2);
-	//modoConstrucao = dissilaba;
+	//modoConstrucao = monossilaba;
 	if(modoConstrucao == dissilaba){
 
 		int aux, a1, a2;
 		int combinacaoTipos[wordLength];
 		
 		char silaba_1;
-		char silaba_2[wordLength-1];
+		char silaba_2[3];
 
 		while(retorno != SUCESSO){		//puts("dissilaba");
 
 			//define silaba 1
 			silaba_1 = getVogal();
 			//define silaba 2
-			formaSilabaDuasLetras((wordLength-1) , silaba_2, combinacaoTipos);
-			silaba_2[wordLength-1] = '\0';		//printf("silaba 2: %s\n", silaba_2);
+			formaSilabaDuasLetras(silaba_2, combinacaoTipos);
+			silaba_2[2] = '\0';		//printf("silaba 2: %s\n", silaba_2);
 
 			a1 = combinacaoTipos[0];
 			a2 = combinacaoTipos[1];
@@ -179,14 +179,14 @@ int tresLetras(int posicao, int wordLength, char word[]){
 		     //printf("retorno: %d\n", retorno);
 		}	
 
-	}else{
+}else{
 
 		int aux, a1, a2, a3;
 		int combinacaoTipos[wordLength];
 
 		while(retorno != SUCESSO){
 
-			formaSilabaTresLetras(wordLength, word, combinacaoTipos);
+			formaSilabaTresLetras(word, combinacaoTipos);
 
 			word[wordLength] = '\0';
 
@@ -236,7 +236,7 @@ int tresLetras(int posicao, int wordLength, char word[]){
     return retorno;
 }
 
-void formaSilabaDuasLetras(int size, char silaba[], int combinacaoTipos[]){
+void formaSilabaDuasLetras(char silaba[], int combinacaoTipos[]){
 
 	int a1, a2, sair, aux;
 
@@ -246,7 +246,7 @@ void formaSilabaDuasLetras(int size, char silaba[], int combinacaoTipos[]){
 
 	while(!sair){
 
-		composicaoSilaba(size, silaba);
+		composicaoSilaba(2, silaba);
 
 		a1 = silaba[0];
 		a2 = silaba[1];
@@ -274,7 +274,7 @@ void formaSilabaDuasLetras(int size, char silaba[], int combinacaoTipos[]){
 	combinacaoTipos[1] = a2; 
 }
 
-void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
+void formaSilabaTresLetras(char silaba[], int combinacaoTipos[]){
 
 	int a1, a2, a3, sair, aux;
 
@@ -284,7 +284,7 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 
 	while(!sair){
 
-		composicaoSilaba(size, silaba);
+		composicaoSilaba(3, silaba);
 
 		a1 = silaba[0];
 		a2 = silaba[1];
@@ -294,13 +294,13 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 			//define primeira letra
 			do{	
 				silaba[0] = getConsoante();
-			}while(silaba[0] == 'h');		
+			}while(silaba[0] == 'h');
 			//testa se a primeira letra é q ou g
 			if(silaba[0] == 'q' || silaba[0] == 'g'){
 				//define segunda letra
 				silaba[1] = 'u';
 				//espera 1 segundo para modificar semente da função rand()
-				pause();
+// 				pause();
 				//define teceira letra
 				while(silaba[2] != 'a' && silaba[2] != 'e' && silaba[2] != 'i' && silaba[2] != 'o')
 					silaba[2] = getVogal();
@@ -308,7 +308,7 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 				//define segunda letra
 				silaba[1] = getVogal();
 				//espera 1 segundo para modificar semente da função rand()
-				pause();
+// 				pause();
 				//define teceira letra
 				do{	
 				silaba[2] = getVogal();
@@ -319,14 +319,20 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 		}else if(a1 == CONSOANTE && a2 == CONSOANTE && a3 == VOGAL){		//puts("CCV");
 
 			//define primeira letra
-			while(silaba[0] != 'b' && silaba[0] != 'c' && silaba[0] != 'd' && silaba[0] != 'f' && silaba[0] != 'g' && silaba[0] != 'p' && silaba[0] != 't' && silaba[0] != 'v')
+			while(silaba[0] != 'j' && silaba[0] != 'l' && silaba[0] != 'm' && silaba[0] != 'r' && silaba[0] != 's' && silaba[0] != 'v' && silaba[0] != 'x' && silaba[0] != 'z')
 				silaba[0] = getConsoante();
+            
 			//define segunda letra
-			aux = rand()%2; //printf("aux: %d\n", aux);
-			if(aux == 0)
-				 silaba[1] = 'r';
-			else
-				silaba[1] = 'l';
+            if(silaba[0] == 'c')
+                while(silaba[1] != 'r' && silaba[1] != 'l' && silaba [1] != 'h')
+                    silaba[1] = getConsoante();
+			else if(silaba[0] == 'b' || silaba[0] == 'f' || silaba[0] == 'g' || silaba[0] == 'p')
+				 while(silaba[1] != 'r' && silaba[1] != 'l' )
+                    silaba[1] = getConsoante();
+			else if(silaba[0] == 'd' || silaba[0] == 't')
+                silaba[1] = 'r';
+            else if(silaba[0] == 'n')
+                silaba[1] = 'h';
 			//define terceira letra
 			silaba[2] = getVogal();
 
@@ -336,7 +342,7 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 			//define primeira letra
 			do{	
 				silaba[0] = getConsoante();
-			}while(silaba[0] == 'q');			
+			}while(silaba[0] == 'q' && silaba[0] == 'h');
 			//define segunda letra
 			silaba[1] = getVogal();
 			//espera 1 segundo para modificar semente da função rand()
@@ -344,7 +350,7 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 			//define teceira letra
 			do{	
 				silaba[2] = getConsoante();
-			}while (silaba[2] == silaba[0]);
+			}while (silaba[2] == silaba[0] && silaba[2] != 'c' && silaba[2] != 'l' && silaba[2] != 'm' && silaba[2] != 'n' && silaba[2] != 's');
 
 			sair = 1;	
 
@@ -354,6 +360,203 @@ void formaSilabaTresLetras(int size, char silaba[], int combinacaoTipos[]){
 	combinacaoTipos[0] = a1;
 	combinacaoTipos[1] = a2;
 	combinacaoTipos[2] = a3;
+	//puts("formaSilabaTresLetras completa");
+}
+
+void formaSilabaQuatroLetras(char silaba[], int combinacaoTipos[]){
+
+	int a1, a2, a3, a4, sair, aux;
+
+	srand(time(NULL));
+
+	sair = 0; 
+
+	while(!sair){
+
+		composicaoSilaba(4, silaba);
+
+		a1 = silaba[0];
+		a2 = silaba[1];
+		a3 = silaba[2];
+        a4 = silaba[3];
+		
+		if(a1 == CONSOANTE && a2 == VOGAL && a3 == VOGAL && a4 == CONSOANTE){		//puts("CVVC");
+			//define primeira letra
+			do{	
+				silaba[0] = getConsoante();
+			}while(silaba[0] == 'h' && silaba[0] == 'j' && silaba[0] == 'x' && silaba[0] == 'z');
+            
+			//testa se a primeira letra é q ou g
+			if(silaba[0] == 'q' || silaba[0] == 'g'){
+				
+                //define segunda letra
+				silaba[1] = 'u';
+				
+				//define teceira letra
+				while(silaba[2] != 'a' && silaba[2] != 'e' && silaba[2] != 'i')
+					silaba[2] = getVogal();
+                
+                //define quarta letra
+                if(silaba[0] == 'g' && silaba[2] == 'a'){
+                    do{	
+                        silaba[3] = getConsoante();
+                    }while(silaba[3] != 'l' && silaba[3] != 'm' && silaba[3] != 'n' && silaba[3] != 'r');
+                }else if(silaba[0] == 'g' && silaba[2] == 'e'){
+                    do{	
+                        silaba[3] = getConsoante();
+                    }while(silaba[3] != 'l' && silaba[3] != 'n' && silaba[3] != 'r' && silaba[3] != 's' && silaba[3] != 'z');
+                }else if(silaba[0] == 'g' && silaba[2] == 'i'){
+                    do{	
+                        silaba[3] = getConsoante();
+                    }while(silaba[3] != 'm' && silaba[3] != 'n' && silaba[3] != 'r' && silaba[3] != 's');
+                }else if(silaba[0] == 'q' && silaba[2] == 'a'){
+                    do{	
+                        silaba[3] = getConsoante();
+                    }while(silaba[3] != 'l' && silaba[3] != 'n' && silaba[3] != 'r' && silaba[3] != 's');
+                }else if(silaba[0] == 'q' && silaba[2] == 'e'){
+                    do{	
+                        silaba[3] = getConsoante();
+                    }while(silaba[3] != 'l' && silaba[3] != 'n' && silaba[3] != 'r' && silaba[3] != 's');
+                }else if(silaba[0] == 'q' && silaba[2] == 'i'){
+                    do{	
+                        silaba[3] = getConsoante();
+                    }while(silaba[3] != 'm' && silaba[3] != 'n' && silaba[3] != 'r' && silaba[3] != 's');
+                }
+                    
+			}else{
+				//define segunda letra
+				do{	
+                    silaba[1] = getVogal();
+				}while (silaba[1] != 'a' && silaba[1] != 'e' && silaba[1] != 'o');
+				
+                //define teceira letra
+				do{	
+                    silaba[2] = getVogal();
+				}while (silaba[1] != 'i' && silaba[1] != 'u']);
+                
+                //define quarta letra
+                silaba[3] = 's';
+			}
+			sair = 1;
+
+		}else if(a1 == CONSOANTE && a2 == VOGAL && a3 == VOGAL && a4 == VOGAL){		//puts("CVVV");
+
+			//define primeira letra
+			do{	
+				silaba[0] = getConsoante();
+			}while(silaba[0] != 'g' && silaba[0] != 'q');
+            
+			//define segunda letra
+            silaba[1] = 'u';
+            
+			//define terceira letra
+			if(silaba[0] == 'q'){
+                
+                silaba[2] = 'e';
+                
+                //define quarta letrguea
+                silaba[3] = 'i';
+            }else{
+                
+                do{	
+                    silaba[2] = getVogal();
+				}while (silaba[2] != 'a' && silaba[2] != 'e' && silaba[2] != 'o');
+                
+                //define quarta letra
+                if(silaba[2] == 'o')
+                    silaba[3] = 'u';
+                else
+                    silaba[3] = 'i';
+            }
+            
+            sair = 1;
+            
+        }else if(a1 == CONSOANTE && a2 == CONSOANTE && a3 == VOGAL && a4 == CONSOANTE){
+                
+            //define a primeira letra
+            do{	
+                silaba[0] = getConsoante();
+            }while(silaba[0] == 'j' || silaba[0] == 'm' || silaba[0] == 'q' || silaba[0] == 'r' || silaba[0] == 's' || silaba[0] == 'x' || silaba[0] == 'z');
+            
+            if(silaba[0] == 'v'){
+                strcpy(silaba, "vrar");                    
+            }else{
+                
+                //define a segunda letra
+                if(silaba[0] == 'c'){
+                    do{	
+                        silaba[1] = getConsoante();
+                    }while(silaba[1] != 'h' && silaba[1] != 'l' && silaba[1] != 'r');
+                }else if(silaba[0] == 'l' || silaba[0] == 'n'){
+                    silaba[1] = 'h';
+                }else{
+                    do{	
+                        silaba[1] = getConsoante();
+                    }while(silaba[1] != 'l' && silaba[1] != 'r');
+                }
+                
+                //define a terceira letra                                  
+                silaba[2] = getVogal();
+                
+                //define qa quarta letra
+                do{	
+                    silaba[3] = getConsoante();
+                }while(silaba[3] == 'l' && silaba[3] != 'm' && silaba[3] != 'n' && silaba[3] != 'r' && silaba[3] != 's' && silaba[3] != 'z'); 
+            }
+
+			sair = 1;
+
+		}else if(a1 == CONSOANTE && a2 == CONSOANTE && a3 == VOGAL && a4 == VOGAL){		//puts("CVC");
+            
+			//define a primeira letra
+            do{	
+                silaba[0] = getConsoante();
+            }while(silaba[0] == 'j' || silaba[0] == 'm' || silaba[0] == 'q' || silaba[0] == 'r' || silaba[0] == 's' || silaba[0] == 'x' || silaba[0] == 'z');
+                           
+            //define a segunda letra
+            if(silaba[0] == 'c'){
+                do{	
+                    silaba[1] = getConsoante();
+                }while(silaba[1] != 'h' && silaba[1] != 'r');
+            }else if(silaba[0] == 'l' || silaba[0] == 'n'){
+                silaba[1] = 'h';
+            }else{
+                silaba[1] = 'r';                
+            
+            //define a terceira letra
+            do{	
+                silaba[2] = getVogal();
+            }while (silaba[2] != 'a' && silaba[2] != 'e' && silaba[2] != 'o');
+			sair = 1;
+            
+            //define a quarta letra
+            do{	
+                silaba[2] = getVogal();
+            }while (silaba[2] != 'i' && silaba[2] != 'u');
+
+		}else if(a1 == CONSOANTE && a2 == VOGAL && a3 == CONSOANTE && a4 == CONSOANTE){
+            
+            //define a primeira letra
+            do{	
+                silaba[0] = getConsoante();
+            }while(silaba[0] == 'j' ||  || silaba[0] == 'q' || silaba[0] == 'r' || silaba[0] == 's' || silaba[0] == 'x' || silaba[0] == 'z');
+            
+            //define a segunda letra
+            silaba[1] = getVogal();
+            
+            //define a terceira letra
+            silaba[2] = 'n';
+            
+            //define a quarta letra
+            silaba[3] = 's';
+            
+        }else
+			continue;
+	}
+	combinacaoTipos[0] = a1;
+	combinacaoTipos[1] = a2;
+	combinacaoTipos[2] = a3;
+    combinacaoTipos[3] = a4;
 	//puts("formaSilabaTresLetras completa");
 }
 
@@ -411,7 +614,7 @@ int sorteiaTipo(){
 	//printf("tipos[0]: %d\n", tipos[0]);
 	//printf("tipos[1]: %d\n", tipos[1]);
 
-	pause();
+// 	pause();
     
     srand(time(NULL));
 

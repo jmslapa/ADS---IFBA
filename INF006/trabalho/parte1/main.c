@@ -18,8 +18,8 @@ int main(void){
     
     for( posicao = 0 ; posicao < CONT ; posicao++ ){
 
-        wordLength = tamanhoPalavra();
-        //wordLength = 3;
+//         wordLength = tamanhoPalavra();
+        wordLength = 3;
         char word[wordLength+1];
 
         //printf("wordLength: %d\n", wordLength);       
@@ -68,7 +68,7 @@ int tamanhoPalavra(){
 
         srand(time(NULL));
     
-        pause();
+//         pause();
     
         size = rand()%4;
     }
