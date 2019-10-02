@@ -278,7 +278,7 @@ int main(){
                     puts("Criado com sucesso\n");
                 }else if(ret == POSICAO_INVALIDA){
                     limpaTela();
-                    puts("Quantidade de posicoes menor que 1\n");
+                    puts("Posicao invalida\n");
                 }else if(ret == SEM_ESPACO_DE_MEMORIA){
                     limpaTela();
                     puts("Sem espaço suficiente na memória\n");
@@ -287,7 +287,7 @@ int main(){
                     printf("A Estrutura auxiliar %d ja existe\n\n", posicao);
                 }else{
                     limpaTela();
-                    puts("Posicao invalida\n");
+                    puts("Quantidade de posicoes menor que 1\n");
                 }
                 break;
             }

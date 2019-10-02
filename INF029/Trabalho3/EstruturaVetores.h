@@ -15,6 +15,8 @@
 #define CONFIG_INVALIDO -13
 #define ERRO_ABERTURA_ARQUIVO -14
 #define ERRO_ESCRITA_BIN -15
+#define ERRO_CARREGAR_DADOS -16
+#define ERRO_ESCREVER_DADOS -17
 
 
 //definindo elementos da lista encadeada
