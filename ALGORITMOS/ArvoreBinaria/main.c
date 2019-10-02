@@ -51,6 +51,21 @@ int main(){
                 break;                
             }
             
+            case 3:{
+                    
+                puts("Informe o valor a ser excluido");
+                scanf("%d", &valor);
+                
+                ret = excluirNode(raiz, valor);
+                
+                if(ret)
+                    puts("Node excluido com sucesso.");
+                else
+                    puts("ERRO: Processo de exclusão falhou.");
+                    
+                break;                
+            }
+            
             default:
                 puts("Opção inválida");
         }
@@ -66,6 +81,7 @@ int mainMenu(){
     puts("Opção 0: Sair");
     puts("Opção 1: Inserir novo nó na Árvore");
     puts("Opção 2: Exibir nós em ordem");
+    puts("Opção 3: Excluir nó da Árvore");
     
     scanf("%d", &op);
     

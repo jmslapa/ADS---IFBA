@@ -16,6 +16,8 @@ root* montarArvore();
 int inserirNode(root* raiz, int valor);
 int destruirArvore(root* raiz);
 void liberarNode(node* no);
+int excluirNode(root* raiz, int valor);
+node* removeAtual(node* no);
 int saberAltura(root* raiz);
 int altura_daArvore(node* no);
 int saberQtd(root* raiz);

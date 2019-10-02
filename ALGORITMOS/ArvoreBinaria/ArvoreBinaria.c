@@ -60,6 +60,79 @@ int inserirNode(root* raiz, int valor){
     return 1;
 }
 
+int excluirNode(root* raiz, int valor){
+    
+    //verifica se a arvore existe
+    if(raiz == NULL)
+        return 0;
+   
+    node* atual = raiz->inicio;
+    node* anterior = NULL;
+    
+    while(atual != NULL){
+        
+        if(valor == atual->info){
+            
+            if(atual == raiz->inicio){
+                raiz->inicio = removeAtual(atual);
+                return 1;
+            }else{
+                
+                if(anterior->esq == atual){
+                    anterior->esq = removeAtual(atual);
+                    return 1;
+                }else{
+                    anterior->dir = removeAtual(atual);
+                    return 1;
+                }
+            }
+        }
+        
+        anterior = atual;
+        
+        if(valor < atual->info)
+            atual = atual->esq;
+        else
+            atual = atual->dir;
+    }
+    
+    return 0;
+}
+
+node* removeAtual(node* atual){
+    
+    node* tmp;
+    node* aux;
+    
+    //verifica se o atual tem filho a esquerda
+    if(atual->esq == NULL){
+        
+        tmp = atual->dir;
+        free(atual);
+        atual = tmp;
+        
+        return atual;
+    }
+    
+    tmp = atual->esq;
+    
+    while(tmp->dir != NULL){        
+        aux = tmp;
+        tmp = tmp->dir;
+    }
+    
+    if(tmp != atual){
+        aux->dir = tmp->esq;
+        tmp->esq = atual->esq;
+    }
+    
+    tmp->dir = atual->dir;
+    free(atual);
+    atual = tmp;
+    
+    return atual;
+}
+
 root* montarArvore(){
     
     //aloca memoria para o indicador da raiz da arvore
