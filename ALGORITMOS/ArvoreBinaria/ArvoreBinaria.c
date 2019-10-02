@@ -114,6 +114,7 @@ node* removeAtual(node* atual){
         return atual;
     }
     
+    aux = atual;
     tmp = atual->esq;
     
     while(tmp->dir != NULL){        
@@ -121,7 +122,7 @@ node* removeAtual(node* atual){
         tmp = tmp->dir;
     }
     
-    if(tmp != atual){
+    if(aux != atual){
         aux->dir = tmp->esq;
         tmp->esq = atual->esq;
     }
@@ -131,6 +132,32 @@ node* removeAtual(node* atual){
     atual = tmp;
     
     return atual;
+}
+
+int buscar_naArvore(root* raiz, int valor){
+    
+    if(raiz == NULL)
+        return 0;
+    
+    node* atual = raiz->inicio;
+    int ret;
+    
+    ret = buscaNode(atual, valor);
+    
+    return ret;    
+}
+
+int buscaNode(node* atual, int valor){
+    
+    if(atual == NULL)
+        return 0;
+    
+    if(atual->info == valor)
+        return 1;
+    else if(valor < atual->info)
+        buscaNode(atual->esq, valor);
+    else
+        buscaNode(atual->dir, valor);
 }
 
 root* montarArvore(){

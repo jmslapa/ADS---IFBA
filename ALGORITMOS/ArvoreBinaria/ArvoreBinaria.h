@@ -18,6 +18,8 @@ int destruirArvore(root* raiz);
 void liberarNode(node* no);
 int excluirNode(root* raiz, int valor);
 node* removeAtual(node* no);
+int buscar_naArvore(root* raiz, int valor);
+int buscaNode(node* atual, int valor);
 int saberAltura(root* raiz);
 int altura_daArvore(node* no);
 int saberQtd(root* raiz);

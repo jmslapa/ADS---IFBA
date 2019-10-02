@@ -66,6 +66,21 @@ int main(){
                 break;                
             }
             
+             case 4:{
+                    
+                puts("Informe o valor do nó a ser buscado");
+                scanf("%d", &valor);
+                
+                ret = buscar_naArvore(raiz, valor);
+                
+                if(ret)
+                    puts("O nó existe na árvore.");
+                else
+                    puts("ERRO: Nó não encontrado.");
+                    
+                break;                
+            }
+            
             default:
                 puts("Opção inválida");
         }
@@ -82,6 +97,7 @@ int mainMenu(){
     puts("Opção 1: Inserir novo nó na Árvore");
     puts("Opção 2: Exibir nós em ordem");
     puts("Opção 3: Excluir nó da Árvore");
+    puts("Opção 4: Buscar nó na Árvore");
     
     scanf("%d", &op);
     
