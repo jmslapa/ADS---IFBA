@@ -9,7 +9,7 @@ int tamanhoPalavra();
 
 int main(void){
     
-    int posicao = 0, wordLength = 0, retorno;
+    int posicao = 0, wordLength = 0, retorno, count = 0;
     
     limpaTela();
     
@@ -18,8 +18,9 @@ int main(void){
     
     for( posicao = 0 ; posicao < CONT ; posicao++ ){
 
-//         wordLength = tamanhoPalavra();
-        wordLength = 3;
+        //wordLength = tamanhoPalavra();
+        puts("Informe o tamanho da palavra");
+        scanf("%d", wordLength);
         char word[wordLength+1];
 
         //printf("wordLength: %d\n", wordLength);       
@@ -32,8 +33,12 @@ int main(void){
 
                     if(retorno != SUCESSO)
                         posicao--;
-                    else
-                        puts(word);                        
+                    else{
+                        puts(word);
+                        
+                        count = count + comparaWord(word, 2);
+                    }
+                    
 
                 break;
             }
@@ -44,16 +49,34 @@ int main(void){
 
                     if(retorno != SUCESSO)
                         posicao--;
-                    else
-                        puts(word);                        
+                    else{
+                        puts(word);
+                        
+                        count = count + comparaWord(word, 3);
+                    }                       
 
                 break;
             }
 
-            
+            case 4:{//palavra com 4 letras 
+
+                    retorno = quatroLetras(posicao, wordLength, word);        //printf("retorno: %d\n", retorno);
+
+                    if(retorno != SUCESSO)
+                        posicao--;
+                    else{
+                        puts(word);
+                        
+                        count = count + comparaWord(word, 4);
+                    }                      
+
+                break;
+            }
         }
         
     }
+    
+    printf("Margem de acerto: %d/%d\n", count, CONT);
     
     finaliza();
 

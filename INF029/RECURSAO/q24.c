@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int fibo(int n);
+int pell(int n);
 
 int main(void){
 	
@@ -10,20 +10,20 @@ int main(void){
 	puts("Informe um Numero");
 	scanf("%d", &n);
 
-	printf("%dº termo da sequencia fibonacci:", n);   
+	printf("%dº termo da sequencia Pell:", n);   
    
-    printf(" %d\n", fibo(n)); 
+    printf(" %d\n", pell(n)); 
     
     return 0;
 }
 
-int fibo(int n){
+int pell(int n){
     
     if(n == 1)
         return 0;
     
-    if(n == 2 || n == 3)
+    if(n == 2)
         return 1;
     
-    return fibo(n-1) + fibo(n-2);      
+    return (2 * pell(n-1)) + pell(n-2);
 }

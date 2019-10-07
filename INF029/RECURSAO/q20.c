@@ -11,7 +11,7 @@ int main(void){
     puts("Informe um valor");
     scanf("%d", &n);
     
-    printf("Fatorial de %d: %d\n", n, fatExp(n));
+    printf("Fatorial exponencial de %d: %d\n", n, fatExp(n));
     
     return 0;
 }

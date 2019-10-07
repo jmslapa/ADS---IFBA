@@ -22,3 +22,5 @@ int defineConstrucao(int opcoes[], int size);
 int buscaString(char *vetorStr[], char str[], int size);
 int duasLetras(int posicao, int wordLength, char word[]);
 int tresLetras(int posicao, int wordLength, char word[]);
+int quatroLetras(int posicao, int wordLength, char word[]);
+int comparaWord(char *word, int size);
