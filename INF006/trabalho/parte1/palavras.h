@@ -1,4 +1,4 @@
-#define CONT 10
+#define CONT 3
 
 #define SUCESSO -1
 #define EXISTING_WORD -2

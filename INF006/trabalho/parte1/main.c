@@ -12,15 +12,14 @@ int main(void){
     int posicao = 0, wordLength = 0, retorno, count = 0;
     
     limpaTela();
-    
     inicializa();   
         
+    //wordLength = tamanhoPalavra();
+    puts("Informe o tamanho da palavra");
+    scanf("%d", &wordLength);
     
     for( posicao = 0 ; posicao < CONT ; posicao++ ){
-
-        //wordLength = tamanhoPalavra();
-        puts("Informe o tamanho da palavra");
-        scanf("%d", wordLength);
+        
         char word[wordLength+1];
 
         //printf("wordLength: %d\n", wordLength);       
@@ -30,13 +29,13 @@ int main(void){
             case 2:{//palavra com 2 letras
 
                     retorno = duasLetras(posicao, wordLength, word);        //printf("retorno: %d\n", retorno);
-
-                    if(retorno != SUCESSO)
+                  
+                    if(retorno != SUCESSO){
                         posicao--;
-                    else{
+                    }else{
                         puts(word);
                         
-                        count = count + comparaWord(word, 2);
+                        count = count + comparaWord(word, 2);                        
                     }
                     
 
@@ -74,7 +73,7 @@ int main(void){
             }
         }
         
-    }
+    }  
     
     printf("Margem de acerto: %d/%d\n", count, CONT);
     

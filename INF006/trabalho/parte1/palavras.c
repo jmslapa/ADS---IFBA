@@ -1171,5 +1171,7 @@ int comparaWord(char *word, int size){
     }else
         return 0;
     
+    fclose(arq);
+    
     return count;
 }
