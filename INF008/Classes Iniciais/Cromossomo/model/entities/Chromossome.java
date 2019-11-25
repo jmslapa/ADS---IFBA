@@ -24,8 +24,8 @@ public class Chromossome {
 		this.alleles = alleles;
 	}
 	
-	public Gene getGene(int size) {
-		return alleles[size];
+	public Gene getGene(int index) {
+		return alleles[index];
 	}
 	
 	public Chromossome clone() {
