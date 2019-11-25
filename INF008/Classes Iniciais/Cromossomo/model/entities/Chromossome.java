@@ -38,7 +38,7 @@ public class Chromossome {
 		double sum = 0.0;
 		
 		if(this == other) {
-			return 1.0 * 100;
+			return 1.0;
 		}
 		
 		if(alleles.length > other.getAlleles().length) {
