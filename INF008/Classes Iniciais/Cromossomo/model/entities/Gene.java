@@ -1,6 +1,6 @@
 package model.entities;
 
-public class Gene {
+public class Gene{
 	
 	private Integer value;
 	

@@ -16,7 +16,7 @@ public class Program {
 		System.out.println("Chromossome 2: " + c2);
 		System.out.println("Compatibility: " + c1.indentityPercentage(c2));
 		
-		c2.setAlleles(new Gene[] {new Gene(1), new Gene(2), new Gene(3), new Gene(40), new Gene(50), new Gene(60), new Gene(70)});
+		c2.setAlleles(new Gene[] {new Gene(10), new Gene(20), new Gene(30), new Gene(40), new Gene(50), new Gene(60), new Gene(70)});
 		System.out.println();
 		System.out.println("Chromossome 1: " + c1);
 		System.out.println("Changed chromossome 2: " + c2);

@@ -1,8 +1,8 @@
 package model.entities;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Chromossome {
 	
@@ -32,21 +32,17 @@ public class Chromossome {
 		return new Chromossome(alleles);
 	}
 	
-	public Double indentityPercentage(Chromossome other) {
-		
+	public Double indentityPercentage(Chromossome other) {		
 		boolean bigger;
-		double sum = 0.0;
-		
+		double sum = 0.0;		
 		if(this == other) {
 			return 1.0;
-		}
-		
+		}		
 		if(alleles.length > other.getAlleles().length) {
 			bigger = true;
 		}else {
 			bigger = false;
-		}
-		
+		}		
 		if(bigger) {
 			for(int i = 0 ; i < other.getAlleles().length ; i++) {
 				if(alleles[i] == null) {
@@ -85,30 +81,19 @@ public class Chromossome {
 	
 	public void merge(Chromossome other, int crossingIndex) {
 		
-		Gene[] a1 = Arrays.copyOfRange(alleles, crossingIndex, alleles.length);
-		Gene[] a2 = Arrays.copyOfRange(other.getAlleles(), crossingIndex, other.getAlleles().length);
-		
-		List<Gene> newAlleles = new ArrayList<>();
-		newAlleles.addAll(Arrays.asList(Arrays.copyOfRange(alleles, 0, crossingIndex)));
-		newAlleles.addAll(Arrays.asList(a2));
-		
-		List<Gene> newOtherAlleles = new ArrayList<>();
-		newOtherAlleles.addAll(Arrays.asList(Arrays.copyOfRange(other.getAlleles(), 0, crossingIndex)));
-		newOtherAlleles.addAll(Arrays.asList(a1));
-		
-		// this.alleles
-		Gene[] allelesAux = new Gene[newAlleles.size()];
-		for(int i = 0 ; i < allelesAux.length ; i++) {
-			allelesAux[i] = newAlleles.get(i);
-		}
-		this.setAlleles(allelesAux);
-		
-		// other.alleles
-		Gene[] otherAllelesAux = new Gene[newOtherAlleles.size()];
-		for(int i = 0 ; i < otherAllelesAux.length ; i++) {
-			otherAllelesAux[i] = newOtherAlleles.get(i);
-		}
-		other.setAlleles(otherAllelesAux);
+		// this.alleles crossing
+		List<Gene> newAlleles = Arrays.asList(Arrays.copyOfRange(alleles, 0, crossingIndex))
+				.stream().collect(Collectors.toList());		
+		newAlleles.addAll(Arrays.asList(Arrays.copyOfRange(other.getAlleles(), crossingIndex, other.getAlleles().length))
+				.stream().collect(Collectors.toList()));				
+		// other.alleles crossing
+		List<Gene> newOtherAlleles = Arrays.asList(Arrays.copyOfRange(other.getAlleles(), 0, crossingIndex))
+				.stream().collect(Collectors.toList());		
+		newOtherAlleles.addAll(Arrays.asList(Arrays.copyOfRange(alleles, crossingIndex, alleles.length))
+				.stream().collect(Collectors.toList()));
+		//new alleles setting
+		this.setAlleles(newAlleles.stream().toArray(Gene[]::new));
+		other.setAlleles(newOtherAlleles.stream().toArray(Gene[]::new));
 	}
 	
 	@Override
