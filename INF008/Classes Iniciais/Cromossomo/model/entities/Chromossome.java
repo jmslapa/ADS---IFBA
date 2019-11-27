@@ -6,14 +6,14 @@ import java.util.stream.Collectors;
 
 public class Chromossome {
 	
-	Gene[] alleles;
+	private Gene[] alleles;
 	
 	public Chromossome() {
 	}
 
-	public Chromossome(Gene[] alleles) {
+	public Chromossome(int size) {
 		super();
-		this.alleles = alleles;
+		this.alleles = new Gene[size];
 	}
 
 	public Gene[] getAlleles() {
@@ -27,9 +27,19 @@ public class Chromossome {
 	public Gene getGene(int index) {
 		return alleles[index];
 	}
+        
+        public void setGene(int index, Gene gene){
+            alleles[index] = gene;
+        }
 	
 	public Chromossome clone() {
-		return new Chromossome(alleles);
+            Chromossome clone = new Chromossome(alleles.length);            
+            for(int i = 0 ; i < alleles.length ; i++){
+                if(getGene(i) != null){
+                   clone.setGene(i, alleles[i].clone());
+                }
+            }
+            return clone;
 	}
 	
 	public Double indentityPercentage(Chromossome other) {		
@@ -38,45 +48,21 @@ public class Chromossome {
 		if(this == other) {
 			return 1.0;
 		}		
-		if(alleles.length > other.getAlleles().length) {
-			bigger = true;
-		}else {
-			bigger = false;
-		}		
-		if(bigger) {
-			for(int i = 0 ; i < other.getAlleles().length ; i++) {
-				if(alleles[i] == null) {
-					if(other.getAlleles()[i] != null) {
-						sum -= 2;
-					}
-				}else {
-					if(other.getAlleles()[i] == null) {
-						sum -= 2;
-					}else if(alleles[i].equals(other.getGene(i))) {
-						sum += 1;
-					}else {
-						sum -= 1;
-					}
-				}
-			}
-		}else {
-			for(int i = 0 ; i < alleles.length ; i++) {
-				if(alleles[i] == null) {
-					if(other.getAlleles()[i] != null) {
-						sum -= 2;
-					}
-				}else {
-					if(other.getAlleles()[i] == null) {
-						sum -= 2;
-					}else if(alleles[i].equals(other.getGene(i))) {
-						sum += 1;
-					}else {
-						sum -= 1;
-					}
-				}
-			}
-		}
-		return sum/other.getAlleles().length;
+                int max = alleles.length > other.getAlleles().length ? other.getAlleles().length : alleles.length;
+                    for(int i = 0 ; i < max ; i++) {
+                            if(getGene(i) == null || other.getGene(i) == null) {
+                                    if(getGene(i) != null || other.getGene(i) != null) {
+                                            sum -= 2;
+                                    }
+                            }else {
+                                    if(getGene(i).equals(other.getGene(i))) {
+                                            sum += 1;
+                                    }else {
+                                            sum -= 1;
+                                    }
+                            }
+                    }
+		return sum/alleles.length;
 	}
 	
 	public void merge(Chromossome other, int crossingIndex) {

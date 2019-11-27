@@ -9,7 +9,8 @@ public class Program {
 		
 		Gene[] v1 = new Gene[] {new Gene(1), new Gene(2), new Gene(3), new Gene(4), new Gene(5)};
 		
-		Chromossome c1 = new Chromossome(v1);
+		Chromossome c1 = new Chromossome(5);
+                c1.setAlleles(v1);
 		Chromossome c2 = c1.clone();		
 		
 		System.out.println("Chromossome 1: " + c1);
