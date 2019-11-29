@@ -42,26 +42,25 @@ public class Chromossome {
             return clone;
 	}
 	
-	public Double indentityPercentage(Chromossome other) {		
-		boolean bigger;
-		double sum = 0.0;		
+	public Double indentityPercentage(Chromossome other) {				
 		if(this == other) {
 			return 1.0;
-		}		
-                int max = alleles.length > other.getAlleles().length ? other.getAlleles().length : alleles.length;
-                    for(int i = 0 ; i < max ; i++) {
-                            if(getGene(i) == null || other.getGene(i) == null) {
-                                    if(getGene(i) != null || other.getGene(i) != null) {
-                                            sum -= 2;
-                                    }
-                            }else {
-                                    if(getGene(i).equals(other.getGene(i))) {
-                                            sum += 1;
-                                    }else {
-                                            sum -= 1;
-                                    }
-                            }
-                    }
+		}
+		double sum = 0.0;
+		int max = alleles.length > other.getAlleles().length ? other.getAlleles().length : alleles.length;
+		for (int i = 0; i < max; i++) {
+			if (getGene(i) == null || other.getGene(i) == null) {
+				if (getGene(i) != null || other.getGene(i) != null) {
+					sum -= 2;
+				}
+			} else {
+				if (getGene(i).equals(other.getGene(i))) {
+					sum += 1;
+				} else {
+					sum -= 1;
+				}
+			}
+		}
 		return sum/alleles.length;
 	}
 	
