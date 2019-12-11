@@ -1,19 +1,21 @@
 package model.entities;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Playlist {
 	
 	private String name;
-	private Date duration;
+	private long secondsOfDuration;
 	private List<Music> list = new ArrayList<>();
+	
+	public Playlist() {
+	}
 	
 	public Playlist(String name, Music music) {
 		this.name = name;
 		list.add(music);
+		secondsOfDuration = music.getSecondsOfDuration();
 	}
 	
 	public String getName() {
@@ -24,9 +26,8 @@ public class Playlist {
 		this.name = name;
 	}
 	
-	public Date getDuration() {
-		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
-		for()
+	public long getSecondsOfDuration() {
+		return secondsOfDuration;
 	}
 	
 	public List<Music> getMusics(){
@@ -35,5 +36,6 @@ public class Playlist {
 	
 	public void addMusic(Music music) {
 		list.add(music);
+		secondsOfDuration += secondsOfDuration;
 	}
 }

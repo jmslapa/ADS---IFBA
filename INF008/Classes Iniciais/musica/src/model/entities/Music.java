@@ -1,22 +1,21 @@
 package model.entities;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import model.enums.Harmony;
 
 public class Music {
 	
 	private String title;
-	private Date durationTime;
+	private long secondsOfDuration;
 	private String genre;
 	private String recorder;
 	private Harmony harmony;
 	private String[] artists;	
 	
-	public Music(String title, Date durationTime, String genre, String recorder, Harmony harmony, String[] artists) {
+	public Music(String title, int secondsOfDuration, String genre, String recorder, Harmony harmony, String[] artists) {
 		this.title = title;
-		this.durationTime = durationTime;
+		this.secondsOfDuration = secondsOfDuration;
 		this.genre = genre;
 		this.recorder = recorder;
 		this.harmony = harmony;
@@ -31,8 +30,8 @@ public class Music {
 		this.title = title;
 	}
 
-	public Date getDurationTime() {
-		return durationTime;
+	public long getSecondsOfDuration() {
+		return secondsOfDuration;
 	}
 
 	public String getGenre() {
