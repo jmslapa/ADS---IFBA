@@ -89,13 +89,18 @@ public class Music {
 			sim += 1.0;
 		}
 		for(int i = 0 ; i < min ; i++) {
-			if(artists[i] == other.getArtists()[i]) {
+			if(artists[i].equals(other.getArtists()[i])) {
 				count++;
 			}
 		}
-		double p = count / max;
-		
+		double p = (double) count / max;
 		return sim + p;
+	}
+
+	@Override
+	public String toString() {
+		return title + ", " + secondsOfDuration + " seconds, " + genre + ", recorder: "
+				+ recorder + ", harmony: " + harmony + ", artists: " + Arrays.toString(artists);
 	}
 
 }

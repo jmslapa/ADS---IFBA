@@ -36,6 +36,6 @@ public class Playlist {
 	
 	public void addMusic(Music music) {
 		list.add(music);
-		secondsOfDuration += secondsOfDuration;
+		secondsOfDuration += music.getSecondsOfDuration();
 	}
 }

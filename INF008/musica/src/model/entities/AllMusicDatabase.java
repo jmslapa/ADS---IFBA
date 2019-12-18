@@ -30,7 +30,7 @@ public class AllMusicDatabase {
 					if(similarPlaylist.getSecondsOfDuration() <= secondsOfDuration) {
 						for(Music n : getMusics()) {
 							if(similarPlaylist.getSecondsOfDuration() <= secondsOfDuration) {
-								if(!m.equals(n)) {
+								if(!playlist.getMusics().contains(n) && !similarPlaylist.getMusics().contains(n)) {
 									if(m.similarity(n) > i) {
 										similarPlaylist.addMusic(n);
 									}
