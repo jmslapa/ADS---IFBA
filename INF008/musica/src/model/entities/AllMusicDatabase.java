@@ -5,17 +5,17 @@ import java.util.List;
 
 public class AllMusicDatabase {
 
-	private  List<Music> allMusics = new ArrayList<>();
+	private List<Music> allMusics = new ArrayList<>();
 
 	public AllMusicDatabase(Music music) {
 		allMusics.add(music);
 	}
-	
-	public  void addMusic(Music music) {
+
+	public void addMusic(Music music) {
 		allMusics.add(music);
 	}
-	
-	public  List<Music> getMusics() {
+
+	public List<Music> getMusics() {
 		return allMusics;
 	}
 
@@ -23,25 +23,21 @@ public class AllMusicDatabase {
 
 		Playlist similarPlaylist = new Playlist();
 		similarPlaylist.setName(name);
-		
-		for(int i = 3 ; i >= 0 ; i--) {
-			if(similarPlaylist.getSecondsOfDuration() <= secondsOfDuration) {
-				for(Music m : playlist.getMusics()) {
-					if(similarPlaylist.getSecondsOfDuration() <= secondsOfDuration) {
-						for(Music n : getMusics()) {
-							if(similarPlaylist.getSecondsOfDuration() <= secondsOfDuration) {
-								if(!playlist.getMusics().contains(n) && !similarPlaylist.getMusics().contains(n)) {
-									if(m.similarity(n) > i) {
-										similarPlaylist.addMusic(n);
-									}
-								}
+
+		for (int i = 3; i >= 0; i--) {
+			for (Music m : playlist.getMusics()) {
+				for (Music n : getMusics()) {
+					if (similarPlaylist.getSecondsOfDuration() <= secondsOfDuration) {
+						if (!playlist.getMusics().contains(n) && !similarPlaylist.getMusics().contains(n)) {
+							if (m.similarity(n) > i) {
+								similarPlaylist.addMusic(n);
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
 		return similarPlaylist;
 	}
 
