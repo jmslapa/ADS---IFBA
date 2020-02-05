@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Passivo
+comment1.params=nome
+comment1.target=Passivo(java.lang.String)
+comment2.params=valor
+comment2.target=void\ debitar(java.lang.Double)
+comment3.params=valor
+comment3.target=void\ creditar(java.lang.Double)
+numComments=4

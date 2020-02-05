@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=LancamentoContabil
+comment1.params=creditar\ debitar
+comment1.target=LancamentoContabil(Conta,\ Conta)
+numComments=2
