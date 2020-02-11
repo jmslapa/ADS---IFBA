@@ -1,3 +1,4 @@
+package entities;
 public class Patrimonio extends Conta{
     
     public Patrimonio(String nome){

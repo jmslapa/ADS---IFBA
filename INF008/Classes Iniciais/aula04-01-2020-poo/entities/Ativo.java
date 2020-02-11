@@ -1,3 +1,4 @@
+package entities;
 public class Ativo extends Conta {
     
     public Ativo(String nome){

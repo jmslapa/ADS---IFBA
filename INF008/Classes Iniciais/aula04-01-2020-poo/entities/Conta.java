@@ -1,3 +1,4 @@
+package entities;
 public abstract class Conta {
     
     protected String nome;
@@ -18,5 +19,4 @@ public abstract class Conta {
     public abstract void debitar(Double valor);
     
     public abstract void creditar(Double valor);
-    
 }

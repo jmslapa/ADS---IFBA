@@ -1,3 +1,4 @@
+package entities;
 public class Passivo extends Conta {
     
     public Passivo(String nome){
